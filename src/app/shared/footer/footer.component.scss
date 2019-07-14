@@ -1,0 +1,54 @@
+@import "../../../mixins";
+@import "../../../variables.scss";
+
+footer {
+  height: 5%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+footer ::ng-deep .mat-toolbar {
+  background-color: $main-text-color;
+  padding: 0 4rem;
+}
+
+mat-toolbar {
+  padding: 0 4rem;
+  height: 100%;
+}
+
+.info-link,
+#copyright {
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid $white-color;
+  @include fontStyle(400, 1rem, $white-color);
+  text-decoration: none;
+}
+
+#copyright {
+  @extend .info-link;
+  border: none;
+}
+
+#last-link {
+  border-right: none;
+}
+
+.copyright-info {
+  position: absolute;
+}
+
+// .footer-menu {
+//   width: 100%;
+//   text-align: center;
+// }
+
+@media (max-width: 600px) {
+  .info-link,
+  #copyright {
+    @include fontStyle(400, 0.8rem, $white-color);
+  }
+}

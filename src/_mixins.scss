@@ -1,0 +1,11 @@
+@import "./variables";
+
+@mixin fontStyle($weigth, $size, $color) {
+  font: $weigth $size Roboto, "Helvetica Neue", sans-serif;
+  color: $color !important;
+}
+
+@mixin buttonFooter($marginTop, $marginRight, $marginBottom, $marginLeft) {
+  border-top: 1px solid $table-row-border-color;
+  margin: $marginTop $marginRight $marginBottom $marginLeft;
+}

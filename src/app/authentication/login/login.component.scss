@@ -1,0 +1,22 @@
+.auth-container {
+  // margin: auto;
+  width: 20em;
+  // height: 15em;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  -moz-transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-card-actions {
+    height: 2.3em;
+    .mat-button {
+      float: right;
+    }
+  }
+}
