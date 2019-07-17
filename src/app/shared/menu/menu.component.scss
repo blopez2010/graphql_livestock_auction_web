@@ -1,0 +1,46 @@
+@import '../../../variables.scss';
+
+.mat-drawer {
+  min-width: 15vw;
+  overflow: auto;
+}
+
+.mat-drawer {
+  -webkit-box-shadow: 2px 0px 5px 0px rgba(189, 189, 189, 1);
+  -moz-box-shadow: 2px 0px 5px 0px rgba(189, 189, 189, 1);
+  box-shadow: 2px 0px 5px 0px rgba(189, 189, 189, 1);
+}
+
+.mat-list {
+  margin-right: 2em;
+
+  .mat-list-item {
+    margin: 0em 1.4em 0em 1em;
+    border-bottom: 1px solid $cancel-buttons-color;
+
+    a {
+      font: 500 1.3rem Roboto, 'Helvetica Neue', sans-serif;
+      color: $main-text-color;
+      text-decoration: none;
+    }
+  }
+}
+
+::ng-deep.mat-drawer-content {
+  background-color: $white-color;
+}
+
+::ng-deep.mat-list .mat-list-item .mat-list-text {
+  padding-right: 0 !important;
+}
+
+.active:after {
+  width: 0px;
+  height: 0px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid;
+  content: '';
+  position: absolute;
+  right: -6.4%;
+}

@@ -1,9 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
-@import "./mixins";
-@import "./variables";
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import './mixins';
+@import './variables';
 
-.container {
-  position: relative;
-  overflow: auto;
+// .container {
+//   position: relative;
+//   overflow: auto;
+// }
+
+html,
+body {
+  height: 100%;
+  display: block;
+  margin: 0;
+  font-size: 1rem;
+  background-color: #fafafa;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+  .container {
+    height: 87%;
+    position: relative;
+    overflow: auto;
+  }
 }

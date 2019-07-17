@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import gql from "graphql-tag";
-import { ToastrService } from "ngx-toastr";
-import { SessionService } from "src/app/shared/session.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import gql from 'graphql-tag';
+import { ToastrService } from 'ngx-toastr';
+import { SessionService } from 'src/app/shared/session.service';
 
 const loginMutation = gql`
   mutation login($user: String!, $password: String!) {
@@ -15,9 +15,9 @@ const loginMutation = gql`
 `;
 
 @Component({
-  selector: "lsa-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"]
+  selector: 'lsa-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
 
   private initForm() {
     this.loginForm = this.formBuilder.group({
-      user: ["", Validators.required],
-      password: ["", Validators.required]
+      user: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
@@ -51,10 +51,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.sessionService.login(this.loginForm.value).subscribe(
         () => {
-          this.router.navigate(["/home"]);
+          this.router.navigate(['/home']);
         },
         err => {
-          this.toastr.error("El usuario o el password es incorrecto.");
+          this.toastr.error('El usuario o el password es incorrecto.');
         }
       );
     }

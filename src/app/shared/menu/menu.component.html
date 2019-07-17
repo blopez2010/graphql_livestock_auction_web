@@ -1,0 +1,17 @@
+<mat-drawer-container class="container" hasBackdrop="false">
+  <mat-drawer mode="side" opened>
+    <mat-list>
+      <mat-list-item *ngFor="let option of menuOptions">
+        <mat-icon mat-list-icon color="primary">
+          {{option.icon}}
+        </mat-icon>
+        <a routerLink="{{option.route}}" mat-line routerLinkActive="active">
+          {{ option.name }}
+        </a>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -6,30 +6,16 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field>
-          <input
-            matInput
-            placeholder="Usuario"
-            formControlName="user"
-            required
-          />
+          <input matInput placeholder="Usuario" formControlName="user" required />
           <mat-error *ngIf="loginForm.get('user').hasError('required')">
             El usuario es requerido.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            [type]="hidePassword ? 'password' : 'text'"
-            placeholder="Contraseña"
-            formControlName="password"
-            required
-          />
+          <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Contraseña"
+            formControlName="password" required />
           <mat-icon matSuffix (click)="hidePassword = !hidePassword">
-            {{ hidePassword ? "visibility" : "visibility_off" }}</mat-icon
-          >
-          <mat-error *ngIf="loginForm.get('password').hasError('required')">
-            Password is required
-          </mat-error>
+            {{ hidePassword ? "visibility" : "visibility_off" }}</mat-icon>
           <mat-error *ngIf="loginForm.get('password').hasError('required')">
             La contraseña es requerida.
           </mat-error>
