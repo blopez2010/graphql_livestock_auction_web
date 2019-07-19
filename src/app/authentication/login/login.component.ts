@@ -1,18 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import gql from 'graphql-tag';
 import { ToastrService } from 'ngx-toastr';
 import { SessionService } from 'src/app/shared/session.service';
-
-const loginMutation = gql`
-  mutation login($user: String!, $password: String!) {
-    login(user: $user, password: $password) {
-      user
-      token
-    }
-  }
-`;
 
 @Component({
   selector: 'lsa-login',

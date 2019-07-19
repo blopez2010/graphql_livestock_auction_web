@@ -17,9 +17,13 @@ body {
   background-color: #fafafa;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 
-  .container {
+  .page-container {
     height: 87%;
     position: relative;
     overflow: auto;
+  }
+
+  .container {
+    padding: 1em;
   }
 }

@@ -15,7 +15,7 @@ export class MenuComponent {
     },
     {
       name: 'Personas',
-      route: '/admin',
+      route: '/admin/people',
       icon: 'people'
     },
     {
