@@ -20,7 +20,7 @@ export class MenuComponent {
     },
     {
       name: 'Items',
-      route: 'items',
+      route: '/admin/items',
       icon: 'list'
     },
     {

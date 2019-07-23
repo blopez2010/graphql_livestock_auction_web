@@ -26,4 +26,17 @@ body {
   .container {
     padding: 1em;
   }
+
+  .center-spinner {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .blur-background {
+    opacity: 0.5;
+  }
 }

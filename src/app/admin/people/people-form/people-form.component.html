@@ -8,16 +8,16 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput cdkFocusInitial placeholder="Apodo" formControlName="nickname" />
+      <input matInput placeholder="Apodo" formControlName="nickname" />
     </mat-form-field>
     <mat-form-field>
-      <input matInput cdkFocusInitial placeholder="Número de Teléfono" formControlName="phoneNumber" />
+      <input matInput placeholder="Número de Teléfono" formControlName="phoneNumber" />
     </mat-form-field>
     <mat-form-field>
-      <input matInput cdkFocusInitial placeholder="Id" formControlName="externalIdentifier" />
+      <input matInput placeholder="Id" formControlName="externalIdentifier" />
     </mat-form-field>
     <mat-form-field>
-      <textarea matInput cdkFocusInitial placeholder="Dirección" formControlName="address" required></textarea>
+      <textarea matInput placeholder="Dirección" formControlName="address" required></textarea>
       <mat-error *ngIf="peopleForm.get('name').hasError('required')">
         El nombre es requerido.
       </mat-error>
@@ -26,7 +26,7 @@
       Permitir Comprar
     </mat-slide-toggle>
     <mat-form-field>
-      <textarea matInput cdkFocusInitial placeholder="Detalles de la Prohibición" formControlName="name"></textarea>
+      <textarea matInput placeholder="Detalles de la Prohibición" formControlName="bannedDescription"></textarea>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

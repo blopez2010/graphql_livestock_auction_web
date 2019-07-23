@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import gql from "graphql-tag";
-import { Subject } from "rxjs";
-import { map } from "rxjs/operators";
-import { TokenStorageService } from "./token-storage.service";
+import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable()
 export class SessionService {
   private readonly tokenExpirationInMinutes = 43200; // 30 days
-  private readonly localStorageTokenKey = "token";
-  private readonly localStorageUserKey = "user";
+  private readonly localStorageTokenKey = 'token';
+  private readonly localStorageUserKey = 'user';
   private userSigningIn = new Subject<boolean>();
   userSignedIn = this.userSigningIn.asObservable();
 
@@ -32,7 +32,7 @@ export class SessionService {
   private saveTokenToLocalStorage(tokenDetails) {
     this.tokenStorage.saveToken(
       this.localStorageTokenKey,
-      JSON.stringify(tokenDetails),
+      tokenDetails,
       true,
       this.tokenExpirationInMinutes
     );
@@ -49,7 +49,7 @@ export class SessionService {
   private saveTokenToSessionStorage(tokenDetails: any) {
     this.tokenStorage.saveToken(
       this.localStorageTokenKey,
-      JSON.stringify(tokenDetails),
+      tokenDetails,
       false,
       this.tokenExpirationInMinutes
     );
@@ -57,7 +57,7 @@ export class SessionService {
 
   private getTokenFromLocalStorage() {
     const token = this.tokenStorage.getToken(this.localStorageTokenKey);
-    if (token && token.isLocal) {
+    if (token) {
       return token.value;
     }
     return null;
@@ -76,6 +76,7 @@ export class SessionService {
   //#region Public functions
 
   public login({ user, password }, keepSigned?: boolean) {
+    this.signOut();
     return this.apollo
       .mutate({
         mutation: this.loginMutation,
@@ -101,10 +102,10 @@ export class SessionService {
   }
 
   public isSignedIn() {
-    return JSON.parse(
+    return (
       this.getTokenFromLocalStorage() ||
-        this.getTokenFromSessionStorage() ||
-        null
+      this.getTokenFromSessionStorage() ||
+      null
     );
   }
 

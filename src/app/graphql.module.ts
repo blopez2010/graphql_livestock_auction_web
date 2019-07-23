@@ -1,10 +1,10 @@
-import { HttpHeaders } from "@angular/common/http";
-import { NgModule } from "@angular/core";
-import { Apollo, ApolloModule } from "apollo-angular";
-import { HttpLink, HttpLinkModule } from "apollo-angular-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloLink, concat } from "apollo-link";
-import { environment } from "../environments/environment";
+import { HttpHeaders } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { Apollo, ApolloModule } from 'apollo-angular';
+import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink, concat } from 'apollo-link';
+import { environment } from '../environments/environment';
 
 @NgModule({
   exports: [ApolloModule, HttpLinkModule]
@@ -16,9 +16,9 @@ export class GraphQLModule {
     const authMiddleware = new ApolloLink((operation, forward) => {
       // add the authorization to the headers
       const headers = new HttpHeaders();
-      headers.set("public-key", environment.publicKey);
-      if (localStorage.getItem("token")) {
-        headers.set("authorization", localStorage.getItem("token"));
+      headers.set('public-key', environment.publicKey);
+      if (localStorage.getItem('token')) {
+        headers.set('authorization', localStorage.getItem('token'));
       }
       operation.setContext({
         ...headers

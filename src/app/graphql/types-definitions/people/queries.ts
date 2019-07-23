@@ -14,3 +14,16 @@ export const allPeople = gql`
     }
   }
 `;
+
+export const getPeopleById = gql`
+  fragment getPeopleById on People {
+    id
+    name
+    nickname
+    phoneNumber
+    externalIdentifier
+    address
+    isBanned
+    bannedDescription
+  }
+`;
