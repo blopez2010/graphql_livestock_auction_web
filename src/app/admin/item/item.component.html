@@ -6,8 +6,7 @@
     <mat-form-field class="events">
       <input type="text" matInput placeholder="Eventos" required [matAutocomplete]="matAutocomplete"
         formControlName="eventYear">
-      <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete"
-        [displayWith]="displayFn.bind(this)">
+      <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
         <mat-option *ngFor="let event of events" [value]="event">
           {{event.eventName}}
         </mat-option>
@@ -20,6 +19,11 @@
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
+      <ng-container matColumnDef="ordinal">
+        <th mat-header-cell *matHeaderCellDef> Ordinal </th>
+        <td mat-cell *matCellDef="let element"> {{element.ordinal}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef> Descripción </th>
         <td mat-cell *matCellDef="let element"> {{element.description}} </td>
@@ -28,11 +32,6 @@
       <ng-container matColumnDef="ownerName">
         <th mat-header-cell *matHeaderCellDef> Propietario </th>
         <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="eventDescription">
-        <th mat-header-cell *matHeaderCellDef> Evento </th>
-        <td mat-cell *matCellDef="let element"> {{element.eventDescription}} </td>
       </ng-container>
 
       <!-- Star Column -->

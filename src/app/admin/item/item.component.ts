@@ -8,6 +8,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { EventsService } from 'src/app/services/events.service';
 import { PeopleService } from 'src/app/services/people.service';
+import { HelpersService } from 'src/app/shared/helpers.service';
 import { Event, Item, Response } from '../../models';
 import { ItemsService } from '../../services/items.service';
 
@@ -18,9 +19,9 @@ import { ItemsService } from '../../services/items.service';
 })
 export class ItemComponent implements OnInit {
   public displayedColumns: string[] = [
+    'ordinal',
     'description',
     'ownerName',
-    'eventDescription',
     'more'
   ];
   public dataSource: any = new MatTableDataSource<any>([]);
@@ -34,7 +35,8 @@ export class ItemComponent implements OnInit {
     private formBuilder: FormBuilder,
     private itemsService: ItemsService,
     private peopleService: PeopleService,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private helpersService: HelpersService
   ) {}
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -68,15 +70,10 @@ export class ItemComponent implements OnInit {
         this.showSpinner = true;
         this.itemsService
           .getByEvent(new Date(selectedEvent.createdAt).getFullYear())
-          .subscribe((response: Response) => {
-            this.dataSource = new MatTableDataSource<any>(
-              this.getDisplayData(response.data)
-            );
-            this.showSpinner = response.isLoading;
-            this.dataSource.paginator = this.paginator;
-          });
+          .subscribe((response: Response) => this.loadItemsData(response));
       }
     });
+    this.displayFn = this.displayFn.bind(this);
   }
 
   private getEventsDisplayData(events: Event[]) {
@@ -115,17 +112,28 @@ export class ItemComponent implements OnInit {
           const itemsResult = result[0];
           const peopleResult = result[1];
 
-          this.dataSource = new MatTableDataSource<any>(
-            this.getDisplayData(itemsResult.data)
-          );
-          this.showSpinner = itemsResult.isLoading;
-          this.dataSource.paginator = this.paginator;
+          this.loadItemsData(itemsResult);
 
           this.people = peopleResult.data;
         },
         () => (this.showSpinner = false)
       );
     });
+  }
+
+  private loadItemsData(itemsResult: Response) {
+    const items = itemsResult.data.sort((a, b) => {
+      if (b.ordinal > a.ordinal) {
+        return -1;
+      } else if (a.ordinal === b.ordinal) {
+        return 0;
+      }
+
+      return 1;
+    });
+    this.dataSource = new MatTableDataSource<any>(this.getDisplayData(items));
+    this.showSpinner = itemsResult.isLoading;
+    this.dataSource.paginator = this.paginator;
   }
 
   //#endregion
@@ -144,13 +152,7 @@ export class ItemComponent implements OnInit {
   }
 
   public displayFn(item) {
-    return this.matAutocomplete.options
-      .filter(x => x.value === item)
-      .map(x => x.viewValue)[0]
-      ? this.matAutocomplete.options
-          .filter(x => x.value === item)
-          .map(x => x.viewValue)[0]
-      : item;
+    return this.helpersService.displayFn(item, this.matAutocomplete);
   }
 
   public editItem(item: Item) {}

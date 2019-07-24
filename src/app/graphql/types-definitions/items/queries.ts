@@ -23,6 +23,7 @@ export const getItemsByEvent = gql`
   query getItemsByEvent($year: Int!) {
     getItemsByEvent(year: $year) {
       id
+      ordinal
       description
       event {
         id
