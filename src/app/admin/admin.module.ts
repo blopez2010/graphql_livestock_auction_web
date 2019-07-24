@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
+import { ItemFormComponent } from './item/item-form/item-form.component';
 import { ItemComponent } from './item/item.component';
 import { PeopleFormComponent } from './people/people-form/people-form.component';
 import { PeopleComponent } from './people/people.component';
@@ -15,12 +16,13 @@ import { PeopleComponent } from './people/people.component';
     ReactiveFormsModule,
     AdminRoutingModule
   ],
-  entryComponents: [PeopleFormComponent, ItemComponent],
+  entryComponents: [PeopleFormComponent, ItemComponent, ItemFormComponent],
   declarations: [
     AdminComponent,
     PeopleComponent,
     PeopleFormComponent,
-    ItemComponent
+    ItemComponent,
+    ItemFormComponent
   ]
 })
 export class AdminModule {}

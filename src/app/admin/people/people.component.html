@@ -2,7 +2,7 @@
   <div>
     <button mat-raised-button color="primary" (click)="addPeople()">Agregar Persona</button>
   </div>
-  <mat-form-field>
+  <mat-form-field class="margin--top filter">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
   </mat-form-field>
   <div class="mat-elevation-z8">

@@ -1,0 +1,27 @@
+<h3 mat-dialog-title>Agregar Item</h3>
+<form [formGroup]="itemForm" (submit)="addItem()" novalidate>
+  <mat-dialog-content>
+    <mat-form-field class="example-full-width">
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="ownerId"
+        [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of people" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="itemForm.get('description').hasError('required')">
+        El nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput cdkFocusInitial placeholder="Descripción" formControlName="description" />
+      <!-- <mat-error *ngIf="itemForm.get('description').hasError('required')">
+        El nombre es requerido.
+      </mat-error> -->
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-button color='primary' type="submit">Guardar</button>
+  </mat-dialog-actions>
+</form>

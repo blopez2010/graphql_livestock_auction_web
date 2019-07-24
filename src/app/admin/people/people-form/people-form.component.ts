@@ -3,13 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { People } from 'src/app/models';
 
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
-
 @Component({
   selector: 'lsa-people-form',
   templateUrl: './people-form.component.html',

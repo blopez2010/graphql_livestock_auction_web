@@ -25,6 +25,10 @@ body {
 
   .container {
     padding: 1em;
+
+    table {
+      width: 100%;
+    }
   }
 
   .center-spinner {
@@ -38,5 +42,13 @@ body {
 
   .blur-background {
     opacity: 0.5;
+  }
+
+  .margin--top {
+    margin-top: 1em;
+  }
+
+  .filter {
+    width: 100%;
   }
 }
