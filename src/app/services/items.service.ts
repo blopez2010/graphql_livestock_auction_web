@@ -7,6 +7,11 @@ import {
   getItemById,
   getItemsByEvent
 } from '../graphql/types-definitions';
+import {
+  createItem,
+  updateItem,
+  updateItemById
+} from '../graphql/types-definitions/items/mutations';
 import { Item, Response } from '../models';
 
 @Injectable({
@@ -15,16 +20,21 @@ import { Item, Response } from '../models';
 export class ItemsService {
   constructor(private apollo: Apollo) {}
 
-  /**
-   * getPeopleIdFromCache
-   */
   public getItemIdFromCache(id: string): Observable<Item> {
-    const people = this.apollo.getClient().readFragment({
+    const item = this.apollo.getClient().readFragment({
       id,
       fragment: getItemById
     });
 
-    return people;
+    return item;
+  }
+
+  public getCacheData(year: number) {
+    return this.apollo
+      .getClient()
+      .readQuery({ query: getItemsByEvent, variables: { year } })[
+      'getItemsByEvent'
+    ];
   }
 
   public get(): Observable<Response> {
@@ -53,6 +63,74 @@ export class ItemsService {
           data: result.data['getItemsByEvent'],
           isLoading: result.loading
         }))
+      );
+  }
+
+  public create(item: any): Observable<Response> {
+    return this.apollo
+      .mutate({
+        mutation: createItem,
+        variables: {
+          input: {
+            ...item,
+            ownerId: item.ownerId.id,
+            id: undefined
+          }
+        }
+      })
+      .pipe(
+        map(result => {
+          const data = result.data['createItem'].data;
+          this.apollo.getClient().writeQuery({
+            query: getItemsByEvent,
+            variables: {
+              year: new Date(data.event.createdAt).getFullYear()
+            },
+            data: {
+              getItemsByEvent: [
+                ...this.getCacheData(
+                  new Date(data.event.createdAt).getFullYear()
+                ),
+                data
+              ]
+            }
+          });
+
+          return {
+            data,
+            isLoading: result.loading
+          };
+        })
+      );
+  }
+
+  update(item: any): Observable<Response> {
+    return this.apollo
+      .mutate({
+        mutation: updateItem,
+        variables: {
+          id: item.id,
+          input: {
+            ...item,
+            ownerId: item.ownerId.id,
+            id: undefined
+          }
+        }
+      })
+      .pipe(
+        map(result => {
+          const data = result.data['updateItem'];
+          this.apollo.getClient().writeFragment({
+            id: item.id,
+            fragment: updateItemById,
+            data
+          });
+
+          return {
+            data,
+            isLoading: result.loading
+          };
+        })
       );
   }
 }

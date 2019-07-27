@@ -39,7 +39,7 @@ export class PeopleComponent implements OnInit {
   private updateSuccess(result: Response, successText: string) {
     const filter = this.dataSource.filter;
     this.showSpinner = result.isLoading;
-    this.toastrService.success('Persona actualizada');
+    this.toastrService.success(successText);
     this.dataSource = new MatTableDataSource<any>(
       this.peopleService.getCacheData()
     );

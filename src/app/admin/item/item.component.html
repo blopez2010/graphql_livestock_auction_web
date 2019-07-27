@@ -7,7 +7,7 @@
       <input type="text" matInput placeholder="Eventos" required [matAutocomplete]="matAutocomplete"
         formControlName="eventYear">
       <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let event of events" [value]="event">
+        <mat-option *ngFor="let event of filteredEvents | async" [value]="event">
           {{event.eventName}}
         </mat-option>
       </mat-autocomplete>
@@ -24,14 +24,14 @@
         <td mat-cell *matCellDef="let element"> {{element.ordinal}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef> Descripción </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-      </ng-container>
-
       <ng-container matColumnDef="ownerName">
         <th mat-header-cell *matHeaderCellDef> Propietario </th>
         <td mat-cell *matCellDef="let element"> {{element.ownerName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
       </ng-container>
 
       <!-- Star Column -->

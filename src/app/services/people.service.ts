@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import {
   allPeople,
   createPeople,
-  getPeopleById,
+  getItemById,
   updatePeople,
   updatePeopleById
 } from '../graphql/types-definitions';
@@ -17,13 +17,10 @@ import { People, Response } from '../models';
 export class PeopleService {
   constructor(private apollo: Apollo) {}
 
-  /**
-   * getPeopleIdFromCache
-   */
   public getPeopleIdFromCache(id: string): Observable<People> {
     const people = this.apollo.getClient().readFragment({
       id,
-      fragment: getPeopleById
+      fragment: getItemById
     });
 
     return people;
@@ -42,16 +39,10 @@ export class PeopleService {
       );
   }
 
-  /**
-   * getCacheData
-   */
   public getCacheData() {
     return this.apollo.getClient().readQuery({ query: allPeople })['allPeople'];
   }
 
-  /**
-   * createPeople
-   */
   public create(people: People): Observable<Response> {
     return this.apollo
       .mutate({
@@ -82,9 +73,6 @@ export class PeopleService {
       );
   }
 
-  /**
-   * update
-   */
   public update(people: People): Observable<Response> {
     return this.apollo
       .mutate({

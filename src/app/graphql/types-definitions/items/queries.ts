@@ -25,6 +25,7 @@ export const getItemsByEvent = gql`
       id
       ordinal
       description
+      externalIdentifier
       event {
         id
         name
@@ -34,6 +35,13 @@ export const getItemsByEvent = gql`
       owner {
         id
         name
+        nickname
+        phoneNumber
+        externalIdentifier
+        address
+        isBanned
+        bannedDescription
+        createdAt
       }
     }
   }
@@ -42,15 +50,25 @@ export const getItemsByEvent = gql`
 export const getItemById = gql`
   fragment getItemById on Item {
     id
-    name
     event {
       id
       name
+      description
       createdAt
     }
+    ordinal
+    description
+    externalIdentifier
     owner {
       id
       name
+      nickname
+      phoneNumber
+      externalIdentifier
+      address
+      isBanned
+      bannedDescription
+      createdAt
     }
   }
 `;

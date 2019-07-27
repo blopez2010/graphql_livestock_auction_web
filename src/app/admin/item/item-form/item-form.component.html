@@ -1,23 +1,26 @@
 <h3 mat-dialog-title>Agregar Item</h3>
 <form [formGroup]="itemForm" (submit)="addItem()" novalidate>
   <mat-dialog-content>
-    <mat-form-field class="example-full-width">
-      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="ownerId"
-        [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option *ngFor="let option of people" [value]="option">
-          {{option}}
+    <mat-form-field>
+      <input matInput placeholder="Ordinal" formControlName="ordinal" />
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" cdkFocusInitial matInput placeholder="Propietario" required [matAutocomplete]="matAutocomplete"
+        formControlName="ownerId">
+      <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let owner of filteredPeople" [value]="owner">
+          {{owner.name}}
         </mat-option>
       </mat-autocomplete>
-      <mat-error *ngIf="itemForm.get('description').hasError('required')">
-        El nombre es requerido.
+      <mat-error *ngIf="itemForm.get('ownerId').hasError('required')">
+        El propietario es requerido.
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput cdkFocusInitial placeholder="Descripción" formControlName="description" />
-      <!-- <mat-error *ngIf="itemForm.get('description').hasError('required')">
-        El nombre es requerido.
-      </mat-error> -->
+      <input matInput placeholder="Descripción" formControlName="description" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Id" formControlName="externalIdentifier" />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
