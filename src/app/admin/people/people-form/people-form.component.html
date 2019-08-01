@@ -1,33 +1,7 @@
 <h3 mat-dialog-title>Agregar Persona</h3>
 <form [formGroup]="peopleForm" (submit)="addPeople()" novalidate>
   <mat-dialog-content>
-    <mat-form-field>
-      <input matInput cdkFocusInitial placeholder="Nombre" formControlName="name" required />
-      <mat-error *ngIf="peopleForm.get('name').hasError('required')">
-        El nombre es requerido.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Apodo" formControlName="nickname" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Número de Teléfono" formControlName="phoneNumber" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Id" formControlName="externalIdentifier" />
-    </mat-form-field>
-    <mat-form-field>
-      <textarea matInput placeholder="Dirección" formControlName="address" required></textarea>
-      <mat-error *ngIf="peopleForm.get('name').hasError('required')">
-        El nombre es requerido.
-      </mat-error>
-    </mat-form-field>
-    <mat-slide-toggle color="primary" formControlName="isBanned">
-      Permitir Comprar
-    </mat-slide-toggle>
-    <mat-form-field>
-      <textarea matInput placeholder="Detalles de la Prohibición" formControlName="bannedDescription"></textarea>
-    </mat-form-field>
+    <lsa-people-form-controls [form]="peopleForm"></lsa-people-form-controls>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>

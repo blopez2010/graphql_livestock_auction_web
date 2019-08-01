@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs/operators';
 import { People, Response } from 'src/app/models';
 import { PeopleService } from 'src/app/services/people.service';
 import { PeopleFormComponent } from './people-form/people-form.component';
@@ -25,8 +27,10 @@ export class PeopleComponent implements OnInit {
   ];
   public dataSource: any = new MatTableDataSource<any>([]);
   public showSpinner = false;
+  public searchForm: FormGroup;
 
   constructor(
+    private builder: FormBuilder,
     private dialog: MatDialog,
     private peopleService: PeopleService,
     private toastrService: ToastrService
@@ -43,12 +47,23 @@ export class PeopleComponent implements OnInit {
     this.dataSource = new MatTableDataSource<any>(
       this.peopleService.getCacheData()
     );
-    this.applyFilter(filter);
+    this.searchForm.get('search').setValue(filter);
   }
 
   //#endregion
 
   ngOnInit() {
+    this.searchForm = this.builder.group({
+      search: ''
+    });
+
+    this.searchForm
+      .get('search')
+      .valueChanges.pipe(debounceTime(300))
+      .subscribe(value => {
+        this.dataSource.filter = value.trim().toLowerCase();
+      });
+
     this.showSpinner = true;
     this.peopleService.get().subscribe(
       (result: Response) => {
@@ -82,18 +97,14 @@ export class PeopleComponent implements OnInit {
       });
   }
 
-  public applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   public editPeople(element: People) {
-    const dataCached = this.peopleService.getPeopleIdFromCache(element.id);
+    // const dataCached = this.peopleService.getPeopleIdFromCache(element.id);
 
     this.dialog
       .open(PeopleFormComponent, {
         disableClose: true,
         maxWidth: '30em',
-        data: dataCached
+        data: element
       })
       .afterClosed()
       .subscribe(data => {

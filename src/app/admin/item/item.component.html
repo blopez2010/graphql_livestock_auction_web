@@ -2,20 +2,8 @@
   <div>
     <button mat-raised-button color="primary" (click)="addItem()">Agregar Item</button>
   </div>
-  <form [formGroup]="searchForm">
-    <mat-form-field class="events">
-      <input type="text" matInput placeholder="Eventos" required [matAutocomplete]="matAutocomplete"
-        formControlName="eventYear">
-      <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let event of filteredEvents | async" [value]="event">
-          {{event.eventName}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field class="margin--top filter">
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar" formControlName="search">
-    </mat-form-field>
-  </form>
+  <lsa-events-filter (selectedEventChange)="selectedEventChange($event)" (searchChange)="searchEventChange($event)">
+  </lsa-events-filter>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 

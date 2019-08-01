@@ -1,7 +1,14 @@
 <header>
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>Subasta</span>
+      <div>
+        <a routerLink="/home" mat-line routerLinkActive="active">
+          Subasta
+        </a>
+        <button *ngIf="hasLoggedIn" mat-icon-button (click)="exit()" matTooltip="Salir de la aplicación">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </div>
     </mat-toolbar-row>
   </mat-toolbar>
 </header>

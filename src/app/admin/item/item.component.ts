@@ -1,17 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatAutocomplete,
   MatDialog,
   MatPaginator,
   MatTableDataSource
 } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin, Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { EventsService } from 'src/app/services/events.service';
+import { Observable } from 'rxjs';
 import { PeopleService } from 'src/app/services/people.service';
-import { HelpersService } from 'src/app/shared/helpers.service';
 import { Event, Item, People, Response } from '../../models';
 import { ItemsService } from '../../services/items.service';
 import { ItemFormComponent } from './item-form/item-form.component';
@@ -30,8 +27,6 @@ export class ItemComponent implements OnInit {
   ];
   public dataSource: any = new MatTableDataSource<any>([]);
   public showSpinner = false;
-  public searchForm: FormGroup;
-  public events: any[] = [];
   public filteredEvents: Observable<any[]>;
   private people: Response[];
   private selectedEventId: string;
@@ -39,11 +34,9 @@ export class ItemComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private toastrService: ToastrService,
-    private formBuilder: FormBuilder,
     private itemsService: ItemsService,
     private peopleService: PeopleService,
-    private eventsService: EventsService,
-    private helpersService: HelpersService
+    private route: ActivatedRoute
   ) {}
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -69,90 +62,22 @@ export class ItemComponent implements OnInit {
     });
   }
 
-  private initForm() {
-    this.searchForm = this.formBuilder.group({
-      search: '',
-      eventYear: [null, Validators.required]
-    });
-
-    this.filteredEvents = this.searchForm.get('eventYear').valueChanges.pipe(
-      startWith(''),
-      map(value => (typeof value === 'string' ? value : value.eventName)),
-      map(eventName =>
-        eventName ? this.filter(eventName) : this.events.slice()
-      )
-    );
-
-    this.filteredEvents.subscribe((event: any) => {
-      if (typeof event === 'object') {
-        let selectedEvent;
-        if (Array.isArray(event) && event.length === 1) {
-          selectedEvent = event[0];
-          this.selectedEventId = event[0].id;
-        } else {
-          selectedEvent = event;
-          this.selectedEventId = selectedEvent.id;
-        }
-
-        if (selectedEvent.createdAt) {
-          this.showSpinner = true;
-          this.itemsService
-            .getByEvent(new Date(selectedEvent.createdAt).getFullYear())
-            .subscribe((response: Response) => this.loadItemsData(response));
-        }
-      }
-    });
-
-    this.displayFn = this.displayFn.bind(this);
-  }
-
-  private getEventsDisplayData(events: Event[]) {
-    return events.map(event => ({
-      ...event,
-      eventName: `${event.name} - ${new Date(event.createdAt).getFullYear()}`
-    }));
-  }
-
-  private loadData() {
-    this.eventsService.get().subscribe((response: Response) => {
-      this.events = this.getEventsDisplayData(response.data);
-
-      const selectedEvent = this.events.sort((a, b) => {
-        const date1 = b.createdAt;
-        const date2 = a.createdAt;
-
-        if (date1 < date2) {
-          return -1;
-        } else if (date1 === date2) {
-          return 0;
-        } else {
-          return 1;
-        }
-      })[0];
-
-      this.selectedEventId = selectedEvent.id;
-      this.searchForm.get('eventYear').setValue(selectedEvent.eventName);
-
-      forkJoin(
-        this.itemsService.getByEvent(
-          new Date(selectedEvent.createdAt).getFullYear()
-        ),
-        this.peopleService.get()
-      ).subscribe(
+  private loadData(activeEvent: Event) {
+    this.showSpinner = true;
+    this.itemsService
+      .getByEvent(new Date(activeEvent.createdAt).getFullYear())
+      .subscribe(
         result => {
-          const itemsResult = result[0];
-          const peopleResult = result[1];
+          this.loadItemsData(result);
+          this.showSpinner = result.isLoading;
 
-          this.loadItemsData(itemsResult);
-
-          this.people = peopleResult.data.map((p: People) => ({
+          this.people = this.route.data['value']['people'].map((p: People) => ({
             ...p,
             name: p.nickname ? `${p.name} (${p.nickname})` : p.name
           }));
         },
         () => (this.showSpinner = false)
       );
-    });
   }
 
   private loadItemsData(itemsResult: Response) {
@@ -170,15 +95,6 @@ export class ItemComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  private filter(name: string): any[] {
-    const filterValue = name.toLowerCase();
-
-    return this.events.filter(
-      option =>
-        option.eventName.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-    );
-  }
-
   private updateSuccess(result: Response, successText: string) {
     const filter = this.dataSource.filter;
     this.showSpinner = result.isLoading;
@@ -189,15 +105,15 @@ export class ItemComponent implements OnInit {
       ),
       isLoading: false
     });
-    this.applyFilter(filter);
+    this.searchEventChange(filter);
   }
 
   //#endregion
 
   ngOnInit() {
-    this.initForm();
+    this.selectedEventId = this.route.data['value']['activeEvent'].id;
     this.showSpinner = true;
-    this.loadData();
+    this.loadData(this.route.data['value']['activeEvent']);
   }
 
   //#region Public methods
@@ -223,14 +139,6 @@ export class ItemComponent implements OnInit {
       });
   }
 
-  public applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  public displayFn(item) {
-    return this.helpersService.displayFn(item, this.matAutocomplete);
-  }
-
   public editItem(item: Item) {
     const dataCached = this.peopleService.getPeopleIdFromCache(item.id);
 
@@ -254,6 +162,14 @@ export class ItemComponent implements OnInit {
             );
         }
       });
+  }
+
+  public selectedEventChange(event: any) {
+    this.loadData(event);
+  }
+
+  public searchEventChange(text: string) {
+    this.dataSource.filter = text.trim().toLowerCase();
   }
   //#endregion
 }

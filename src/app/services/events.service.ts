@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { allEvents } from '../graphql/types-definitions';
+import { allEvents, getActiveEvent } from '../graphql/types-definitions';
 import { Response } from '../models';
 
 @Injectable({
@@ -19,6 +19,22 @@ export class EventsService {
       .pipe(
         map(result => ({
           data: result.data['allEvents'],
+          isLoading: result.loading
+        }))
+      );
+  }
+
+  /**
+   * getActiveEvent
+   */
+  public getActiveEvent(): Observable<Response> {
+    return this.apollo
+      .query({
+        query: getActiveEvent
+      })
+      .pipe(
+        map(result => ({
+          data: result.data['getActiveEvent'],
           isLoading: result.loading
         }))
       );

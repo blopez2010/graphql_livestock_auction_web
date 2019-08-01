@@ -2,9 +2,11 @@
   <div>
     <button mat-raised-button color="primary" (click)="addPeople()">Agregar Persona</button>
   </div>
-  <mat-form-field class="margin--top filter">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
-  </mat-form-field>
+  <form [formGroup]="searchForm" novalidate>
+    <mat-form-field class="margin--top filter">
+      <input matInput placeholder="Filtrar" formControlName="search">
+    </mat-form-field>
+  </form>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 

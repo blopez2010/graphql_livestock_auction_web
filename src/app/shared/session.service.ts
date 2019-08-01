@@ -10,8 +10,8 @@ export class SessionService {
   private readonly tokenExpirationInMinutes = 43200; // 30 days
   private readonly localStorageTokenKey = 'token';
   private readonly localStorageUserKey = 'user';
-  private userSigningIn = new Subject<boolean>();
-  userSignedIn = this.userSigningIn.asObservable();
+  private userLoggingIn = new Subject<boolean>();
+  userLoggedIn = this.userLoggingIn.asObservable();
 
   constructor(
     private tokenStorage: TokenStorageService,
@@ -38,8 +38,8 @@ export class SessionService {
     );
   }
 
-  private saveToken(token: any, keepSigned: any) {
-    if (keepSigned) {
+  private saveToken(token: any, keepLogged: any) {
+    if (keepLogged) {
       this.saveTokenToLocalStorage(token);
       return;
     }
@@ -75,8 +75,8 @@ export class SessionService {
 
   //#region Public functions
 
-  public login({ user, password }, keepSigned?: boolean) {
-    this.signOut();
+  public login({ user, password }, keepLogged?: boolean) {
+    this.logout();
     return this.apollo
       .mutate({
         mutation: this.loginMutation,
@@ -87,21 +87,21 @@ export class SessionService {
       })
       .pipe(
         map(result => {
-          this.saveToken(result.data.login.token, keepSigned);
+          this.saveToken(result.data.login.token, keepLogged);
           return result;
         })
       );
   }
 
-  public signOut() {
+  public logout() {
     localStorage.clear();
   }
 
-  public userHasSignedIn(signedIn: boolean) {
-    this.userSigningIn.next(signedIn);
+  public userHasLoggedIn(loggedIn: boolean) {
+    this.userLoggingIn.next(loggedIn);
   }
 
-  public isSignedIn() {
+  public get isLoggedIn(): boolean {
     return (
       this.getTokenFromLocalStorage() ||
       this.getTokenFromSessionStorage() ||

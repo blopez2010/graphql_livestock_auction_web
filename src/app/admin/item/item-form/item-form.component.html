@@ -1,27 +1,7 @@
 <h3 mat-dialog-title>Agregar Item</h3>
 <form [formGroup]="itemForm" (submit)="addItem()" novalidate>
   <mat-dialog-content>
-    <mat-form-field>
-      <input matInput placeholder="Ordinal" formControlName="ordinal" />
-    </mat-form-field>
-    <mat-form-field>
-      <input type="text" cdkFocusInitial matInput placeholder="Propietario" required [matAutocomplete]="matAutocomplete"
-        formControlName="ownerId">
-      <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let owner of filteredPeople" [value]="owner">
-          {{owner.name}}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-error *ngIf="itemForm.get('ownerId').hasError('required')">
-        El propietario es requerido.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Descripción" formControlName="description" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Id" formControlName="externalIdentifier" />
-    </mat-form-field>
+    <lsa-item-form-controls [form]="itemForm" [filteredPeople]="filteredPeople"></lsa-item-form-controls>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close type="button">Cancelar</button>

@@ -10,3 +10,14 @@ export const allEvents = gql`
     }
   }
 `;
+
+export const getActiveEvent = gql`
+  query getActiveEvent {
+    getActiveEvent {
+      id
+      name
+      description
+      createdAt
+    }
+  }
+`;

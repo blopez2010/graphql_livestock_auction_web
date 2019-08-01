@@ -51,16 +51,6 @@ export class ItemFormComponent implements OnInit {
       }
     });
 
-    // this.filteredPeople = this.itemForm.get('ownerId').valueChanges.pipe(
-    //   debounceTime(500),
-    //   startWith(''),
-    //   map(value => {
-    //     return typeof value === 'string' ? value : value.name;
-    //   }),
-    //   map(name => {
-    //     return name ? this.filter(name) : this.people.slice();
-    //   })
-    // );
     this.displayFn = this.displayFn.bind(this);
   }
 

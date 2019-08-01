@@ -25,12 +25,12 @@ export class MenuComponent {
     },
     {
       name: 'Transacciones',
-      route: 'transactions',
+      route: '/transactions/list',
       icon: 'money'
     },
     {
       name: 'Subastar',
-      route: 'auction',
+      route: '/transactions/auction',
       icon: 'add_shopping_cart'
     }
   ];

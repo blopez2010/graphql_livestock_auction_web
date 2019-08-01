@@ -6,17 +6,30 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'home',
-    loadChildren: 'src/app/home/home.module#HomeModule',
+    loadChildren: () =>
+      import('./home/home.module').then(mod => mod.HomeModule),
     canActivate: [SessionGuard]
   },
   {
     path: 'auth',
-    loadChildren:
-      'src/app/authentication/authentication.module#AuthenticationModule'
+    loadChildren: () =>
+      import('./authentication/authentication.module').then(
+        mod => mod.AuthenticationModule
+      )
   },
   {
     path: 'admin',
-    loadChildren: 'src/app/admin/admin.module#AdminModule'
+    loadChildren: () =>
+      import('./admin/admin.module').then(mod => mod.AdminModule),
+    canActivate: [SessionGuard]
+  },
+  {
+    path: 'transactions',
+    loadChildren: () =>
+      import('./transactions/transactions.module').then(
+        mod => mod.TransactionsModule
+      ),
+    canActivate: [SessionGuard]
   }
 ];
 
