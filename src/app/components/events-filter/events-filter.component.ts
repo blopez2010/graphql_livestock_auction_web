@@ -35,15 +35,8 @@ export class EventsFilterComponent implements OnInit {
   @ViewChild('matAutocomplete', { static: true })
   matAutocomplete: MatAutocomplete;
 
-  private getEventsDisplayData(events: Event[]) {
-    return events.map(event => ({
-      ...event,
-      eventName: `${event.name} - ${new Date(event.createdAt).getFullYear()}`
-    }));
-  }
-
   ngOnInit() {
-    this.events = this.getEventsDisplayData(this.route.data['value']['events']);
+    this.events = this.route.data['value']['events'];
     this.activeEvent = this.route.data['value']['activeEvent'];
 
     this.form = this.formBuilder.group({

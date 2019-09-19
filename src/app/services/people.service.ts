@@ -61,7 +61,15 @@ export class PeopleService {
           this.apollo.getClient().writeQuery({
             query: allPeople,
             data: {
-              allPeople: [...this.getCacheData(), data]
+              allPeople: [
+                ...this.getCacheData(),
+                {
+                  ...data,
+                  fullName: people.nickname
+                    ? `${people.name} (${people.nickname})`
+                    : people.fullName
+                }
+              ]
             }
           });
 

@@ -1,14 +1,13 @@
-<div [formGroup]="form">
+<div [formGroup]="form" class="filter">
   <mat-form-field class="events">
-    <input type="text" matInput placeholder="Eventos" required [matAutocomplete]="matAutocomplete"
-      formControlName="eventYear">
+    <input type="text" matInput placeholder="Items" [matAutocomplete]="matAutocomplete" formControlName="search">
     <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
-      <mat-option *ngFor="let event of filteredEvents" [value]="event">
-        {{event.eventName}}
+      <mat-option *ngFor="let item of filteredItems" [value]="item">
+        {{item.description}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-  <mat-form-field class="margin--top filter">
-    <input matInput placeholder="Filtrar" formControlName="searchItems">
+  <mat-form-field class="margin--top filter" *ngIf="showTextFilter">
+    <input matInput placeholder="Filtrar" formControlName="filter">
   </mat-form-field>
 </div>

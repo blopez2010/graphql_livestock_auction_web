@@ -7,9 +7,8 @@ import {
 } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { PeopleService } from 'src/app/services/people.service';
-import { Event, Item, People, Response } from '../../models';
+import { Event, Item, Response } from '../../models';
 import { ItemsService } from '../../services/items.service';
 import { ItemFormComponent } from './item-form/item-form.component';
 
@@ -27,7 +26,6 @@ export class ItemComponent implements OnInit {
   ];
   public dataSource: any = new MatTableDataSource<any>([]);
   public showSpinner = false;
-  public filteredEvents: Observable<any[]>;
   private people: Response[];
   private selectedEventId: string;
 
@@ -71,10 +69,7 @@ export class ItemComponent implements OnInit {
           this.loadItemsData(result);
           this.showSpinner = result.isLoading;
 
-          this.people = this.route.data['value']['people'].map((p: People) => ({
-            ...p,
-            name: p.nickname ? `${p.name} (${p.nickname})` : p.name
-          }));
+          this.people = this.route.data['value']['people'];
         },
         () => (this.showSpinner = false)
       );

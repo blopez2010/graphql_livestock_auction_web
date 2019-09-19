@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: "http://localhost:4000/"
+  api: 'https://ajj317pwbc.execute-api.us-east-1.amazonaws.com/dev/graphql'
 };

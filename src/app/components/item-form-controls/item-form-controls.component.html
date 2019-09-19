@@ -7,7 +7,7 @@
       formControlName="ownerId">
     <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
       <mat-option *ngFor="let owner of filteredPeople" [value]="owner">
-        {{owner.name}}
+        {{owner.fullName}}
       </mat-option>
     </mat-autocomplete>
     <mat-error *ngIf="form.get('ownerId').hasError('required')">

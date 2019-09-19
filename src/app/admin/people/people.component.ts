@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs/operators';
 import { People, Response } from 'src/app/models';
 import { PeopleService } from 'src/app/services/people.service';
-import { PeopleFormComponent } from './people-form/people-form.component';
+import { PeopleFormComponent } from '../../components/people-form/people-form.component';
 
 @Component({
   selector: 'lsa-people',

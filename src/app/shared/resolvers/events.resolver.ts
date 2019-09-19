@@ -17,8 +17,17 @@ export class EventsResolver implements Resolve<Event> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Event | Observable<Event> | Promise<Event> {
-    return this.eventsService
-      .get()
-      .pipe(switchMap(({ data }: Response) => of(data)));
+    return this.eventsService.get().pipe(
+      switchMap(({ data }: Response) =>
+        of(
+          data.map((event: Event) => ({
+            ...event,
+            eventName: `${event.name} - ${new Date(
+              event.createdAt
+            ).getFullYear()}`
+          }))
+        )
+      )
+    );
   }
 }

@@ -5,7 +5,10 @@ import { map } from 'rxjs/operators';
 import {
   allItems,
   getItemById,
-  getItemsByEvent
+  getItemByOrdinal,
+  getItemsByEvent,
+  getItemsCountDown,
+  getTotalItems
 } from '../graphql/types-definitions';
 import {
   createItem,
@@ -63,6 +66,75 @@ export class ItemsService {
           data: result.data['getItemsByEvent'],
           isLoading: result.loading
         }))
+      );
+  }
+
+  public getTotalCountByEvent(eventId: string): Observable<Response> {
+    return this.apollo
+      .query({
+        query: getTotalItems,
+        variables: {
+          eventId
+        }
+      })
+      .pipe(
+        map(result => ({
+          data: result.data['getTotalCount'],
+          isLoading: result.loading
+        }))
+      );
+  }
+
+  public getByOrdinal(ordinal: number, eventId: string): Observable<Response> {
+    return this.apollo
+      .query({
+        query: getItemByOrdinal,
+        variables: {
+          ordinal,
+          eventId
+        }
+      })
+      .pipe(
+        map(result => ({
+          data: result.data['getItemByOrdinal'],
+          isLoading: result.loading
+        }))
+      );
+  }
+
+  /**
+   * getItemsCountDown
+   */
+  public getItemsCountDown(eventId: string) {
+    return this.apollo
+      .query({
+        query: getItemsCountDown,
+        variables: {
+          eventId
+        }
+      })
+      .pipe(
+        map(result => {
+          return { data: result.data['getItemsCountDown'] };
+        })
+      );
+  }
+
+  /**
+   * getItemsCountDown
+   */
+  public getTotalItems(eventId: string) {
+    return this.apollo
+      .query({
+        query: getTotalItems,
+        variables: {
+          eventId
+        }
+      })
+      .pipe(
+        map(result => {
+          return { data: result.data['getTotalItems'] };
+        })
       );
   }
 

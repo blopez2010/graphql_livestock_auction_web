@@ -1,5 +1,88 @@
 <div class="container" [ngClass]="{ 'blur-background': showSpinner }">
-  <div class="mat-elevation-z8">
-
-  </div>
+  <form [formGroup]="auctionForm">
+    <mat-card formGroupName="item">
+      <mat-card-header>Información del Item a Subastar</mat-card-header>
+      <mat-card-content>
+        <div class="inline">
+          <mat-form-field>
+            <input matInput cdkFocusInitial placeholder="Número de Item" type="number" formControlName="ordinal">
+            <mat-error *ngIf="auctionForm.get('item').get('ordinal').hasError('required')">
+              El ordinal es requerido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="inline">
+          <mat-form-field class="owner">
+            <input matInput cdkFocusInitial placeholder="Descripción" type="text" formControlName="description">
+          </mat-form-field>
+        </div>
+        <div class="inline">
+          <mat-form-field class="owner">
+            <input matInput placeholder="Donador" type="text" formControlName="ownerName">
+          </mat-form-field>
+        </div>
+        <div class="inline">
+          <mat-form-field class="nickname">
+            <input matInput placeholder="Apodo" type="text" formControlName="nickname">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card formGroupName="transaction">
+      <mat-card-header>Información del Comprador</mat-card-header>
+      <mat-card-content>
+        <div class="inline buyer">
+          <lsa-people-filter [people]="people" (addedPeople)="addPeople($event)"
+            (selectedPeopleChange)="selectedPeopleChange($event)">
+          </lsa-people-filter>
+        </div>
+        <div class="inline description">
+          <mat-form-field>
+            <textarea matInput placeholder="Descripción" formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="inline">
+          <mat-form-field class="amount">
+            <input matInput placeholder="Monto subastado" type="number" formControlName="amount">
+            <span matPrefix>¢&nbsp;</span>
+            <span matSuffix>.00</span>
+            <mat-error *ngIf="auctionForm.get('transaction').get('amount').hasError('required')">
+              El monto es requerido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-header>Detalle de la compra</mat-card-header>
+      <mat-card-content class="buy-details">
+        <div class="inline labels">
+          <label>#:</label><label>{{this.auctionForm.get('item').get('ordinal').value | number}}</label>
+          <label>Descripción:</label><label>{{this.auctionForm.get('item').get('description').value}}</label>
+          <label>Comprador:</label><label>{{selectedBuyer.fullName || ''}}</label>
+          <label>Descriptión
+            Venta:</label><label>{{this.auctionForm.get('transaction').get('description').value}}</label>
+          <label>Amount:</label><label
+            class="amount">¢{{this.auctionForm.get('transaction').get('amount').value | number}}</label>
+          <label>Total vendido:</label><label
+            class="totalAmount">¢{{this.auctionForm.get('transaction').get('totalBuying').value | number}}</label>
+          <label>Total de Items:</label><label
+            class="totalItems">{{this.auctionForm.get('transaction').get('totalItemsCount').value | number}}</label>
+          <label>Items por ser subastados:</label><label
+            class="countDown">{{this.auctionForm.get('transaction').get('countDown').value | number}}</label>
+          <!-- <label>Items subastados:</label><label
+            class="countDown">{{this.auctionForm.get('transaction').get('totalCount').value | number}}</label> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <div class="buttons">
+          <button mat-button color='secondary' type="button" (click)="donate()">Comprar y
+            Donar</button>
+          <button mat-button color='primary' type="button" class="buy" (click)="buy()">Comprar</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
 </div>

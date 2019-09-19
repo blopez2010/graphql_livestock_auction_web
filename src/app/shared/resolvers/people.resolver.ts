@@ -17,8 +17,15 @@ export class PeopleResolver implements Resolve<People> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): People | Observable<People> | Promise<People> {
-    return this.peopleService
-      .get()
-      .pipe(switchMap(({ data }: Response) => of(data)));
+    return this.peopleService.get().pipe(
+      switchMap(({ data }: Response) =>
+        of(
+          data.map((p: People) => ({
+            ...p,
+            fullName: p.nickname ? `${p.name} (${p.nickname})` : p.name
+          }))
+        )
+      )
+    );
   }
 }

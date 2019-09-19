@@ -1,0 +1,95 @@
+.mat-card {
+  padding-top: 1em;
+  margin-bottom: 1em;
+
+  .buy-details {
+    margin-top: 2em;
+
+    .inline {
+      display: grid;
+      grid-template-columns: 10em 1fr;
+    }
+  }
+
+  .inline {
+    display: inline-flex;
+
+    &.labels {
+      font-size: 2em;
+    }
+
+    label {
+      &.amount {
+        color: blue;
+        margin-bottom: 1em;
+      }
+      &.totalItems {
+        color: blue;
+        margin-bottom: 1em;
+        font-size: 2em;
+      }
+      &.totalAmount {
+        color: green;
+        margin-bottom: 1em;
+        font-size: 2em;
+      }
+      &.countDown {
+        color: red;
+        margin-bottom: 1em;
+        font-size: 2em;
+      }
+    }
+
+    .owner {
+      width: 20em !important;
+    }
+
+    .nickname {
+      width: 20em !important;
+    }
+
+    .mat-form-field {
+      margin: 0.5em 1em 0.5em 2em;
+      width: 10em;
+    }
+
+    .amount {
+      width: 11em;
+      text-align: left;
+      input {
+        text-align: right;
+      }
+    }
+
+    &.buyer {
+      width: 100%;
+    }
+
+    &.description {
+      width: 100%;
+
+      .mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+
+  button {
+    margin-top: 1.2em;
+  }
+
+  .buttons {
+    width: 100%;
+    .buy {
+      float: right;
+    }
+  }
+  ::ng-deep.filter {
+    margin: 0.5em 2em;
+    width: 25em;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+}

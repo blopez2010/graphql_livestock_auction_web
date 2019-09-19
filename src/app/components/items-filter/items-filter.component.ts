@@ -6,9 +6,12 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
 import { HelpersService } from 'src/app/shared/helpers.service';
+import { Item } from '../../models';
 
 @Component({
   selector: 'lsa-items-filter',
@@ -16,44 +19,64 @@ import { HelpersService } from 'src/app/shared/helpers.service';
   styleUrls: ['./items-filter.component.scss']
 })
 export class ItemsFilterComponent implements OnInit {
-  public filteredEvents: any[];
+  public filteredItems: Item[];
+  public form: FormGroup;
+  public items: Item[];
 
-  constructor(private helpersService: HelpersService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private helpersService: HelpersService
+  ) {}
 
-  @Input() form: FormGroup;
-  @Input() events: any[];
+  @Input() showTextFilter = true;
   @Output() selectedEventChange = new EventEmitter<any>();
+  @Output() filterChange = new EventEmitter<any>();
   @ViewChild('matAutocomplete', { static: true })
   matAutocomplete: MatAutocomplete;
 
-  ngOnInit() {
-    this.displayFn = this.displayFn.bind(this);
+  private initForm() {
+    this.form = this.formBuilder.group({
+      search: '',
+      filter: ''
+    });
 
-    this.form.get('searchItems').valueChanges.subscribe(name => {
+    this.form.get('search').valueChanges.subscribe(name => {
       if (typeof name === 'string') {
         if (name) {
           this.filter(name);
         } else {
-          this.events.slice();
+          this.items.slice();
         }
-      }
-
-      if (this.filteredEvents.length === 1) {
-        this.selectedEventChange.emit(this.filteredEvents[0]);
+      } else if (typeof name === 'object') {
+        this.selectedEventChange.emit(name);
+      } else if (Array.isArray(name)) {
+        this.selectedEventChange.emit(this.filteredItems[0]);
       }
     });
-  }
 
-  public displayFn(item) {
-    return this.helpersService.displayFn(item, this.matAutocomplete);
+    this.form
+      .get('filter')
+      .valueChanges.pipe(debounceTime(500))
+      .subscribe((value: string) => this.filterChange.emit(value));
   }
 
   private filter(name: string) {
     const filterValue = name.toLowerCase();
 
-    this.filteredEvents = this.events.filter(
+    this.filteredItems = this.items.filter(
       option =>
-        option.name.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+        option.description.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
     );
+  }
+
+  ngOnInit() {
+    this.initForm();
+    this.items = this.route.data['value']['items'];
+    this.displayFn = this.displayFn.bind(this);
+  }
+
+  public displayFn(item) {
+    return this.helpersService.displayFn(item, this.matAutocomplete);
   }
 }

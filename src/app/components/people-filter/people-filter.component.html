@@ -1,0 +1,14 @@
+<div [formGroup]="form" class="filter">
+  <mat-form-field class="events">
+    <input type="text" matInput placeholder="Buscar Comprador" [matAutocomplete]="matAutocomplete"
+      formControlName="search">
+    <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let people of filteredPeople" [value]="people">
+        {{people.fullName}}
+      </mat-option>
+    </mat-autocomplete>
+    <button mat-icon-button matSuffix (click)="addPeople()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+</div>

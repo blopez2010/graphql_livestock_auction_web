@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MenuComponent } from '../shared/menu/menu.component';
+import { ActiveEventResolver } from '../shared/resolvers/active-event.resolver';
+import { EventsResolver } from '../shared/resolvers/events.resolver';
+import { PeopleResolver } from '../shared/resolvers/people.resolver';
 import { AuctionComponent } from './auction/auction.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 
@@ -16,7 +19,13 @@ const routes: Routes = [
       },
       {
         path: 'auction',
-        component: AuctionComponent
+        component: AuctionComponent,
+        resolve: {
+          activeEvent: ActiveEventResolver,
+          people: PeopleResolver,
+          events: EventsResolver
+        },
+        runGuardsAndResolvers: 'always'
       }
     ]
   }

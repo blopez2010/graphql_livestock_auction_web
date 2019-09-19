@@ -72,3 +72,32 @@ export const getItemById = gql`
     }
   }
 `;
+
+export const getItemByOrdinal = gql`
+  query getItemByOrdinal($ordinal: Int!, $eventId: String!) {
+    getItemByOrdinal(ordinal: $ordinal, eventId: $eventId) {
+      id
+      description
+      owner {
+        name
+        nickname
+      }
+    }
+  }
+`;
+
+export const getItemsCountDown = gql`
+  query getItemsCountDown($eventId: String!) {
+    getItemsCountDown(eventId: $eventId) {
+      count
+    }
+  }
+`;
+
+export const getTotalItems = gql`
+  query getTotalItems($eventId: String!) {
+    getTotalItems(eventId: $eventId) {
+      count
+    }
+  }
+`;

@@ -1,6 +1,7 @@
 export interface People {
   id: string;
   name: string;
+  fullName?: string;
   nickname?: string;
   phoneNumber?: string;
   externalIdentifier?: string;

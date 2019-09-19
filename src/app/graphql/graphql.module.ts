@@ -8,8 +8,6 @@ import { ApolloLink, concat } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { environment } from 'src/environments/environment';
 
-const uri = 'http://localhost:4000/';
-
 export function provideApollo(httpLink: HttpLink): any {
   const basic = setContext((op, ctx) => ({
     headers: new HttpHeaders().set('Accept', 'charset=uf-8')
@@ -21,10 +19,7 @@ export function provideApollo(httpLink: HttpLink): any {
     auth = setContext((operation, ctx) => {
       const headers = ctx.headers
         .append('public-key', environment.publicKey)
-        .append(
-          'authorization',
-          JSON.parse(localStorage.getItem('token')).value
-        );
+        .append('auth-lsa', JSON.parse(localStorage.getItem('token')).value);
 
       return {
         headers
@@ -36,7 +31,11 @@ export function provideApollo(httpLink: HttpLink): any {
     }));
   }
 
-  const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
+  const link = ApolloLink.from([
+    basic,
+    auth,
+    httpLink.create({ uri: environment.api })
+  ]);
 
   return {
     link,
@@ -71,7 +70,8 @@ export class GraphQLModule {
         const token = JSON.parse(localStorage.getItem('token'))['value'];
         operation.setContext({
           headers: {
-            Authorization: token || ''
+            'auth-lsa': token || '',
+            'public-key': environment.publicKey
           }
         });
       } else {
@@ -89,7 +89,13 @@ export class GraphQLModule {
       link: concat(authMiddleware, http),
       cache: new InMemoryCache({
         dataIdFromObject: object => object.id
-      })
+      }),
+      defaultOptions: {
+        query: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all'
+        }
+      }
     });
   }
 }

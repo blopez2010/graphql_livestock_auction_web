@@ -7,7 +7,6 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
 import { ItemFormComponent } from './item/item-form/item-form.component';
 import { ItemComponent } from './item/item.component';
-import { PeopleFormComponent } from './people/people-form/people-form.component';
 import { PeopleComponent } from './people/people.component';
 
 @NgModule({
@@ -18,11 +17,10 @@ import { PeopleComponent } from './people/people.component';
     AdminRoutingModule,
     ComponentsModule
   ],
-  entryComponents: [PeopleFormComponent, ItemComponent, ItemFormComponent],
+  entryComponents: [ItemComponent, ItemFormComponent],
   declarations: [
     AdminComponent,
     PeopleComponent,
-    PeopleFormComponent,
     ItemComponent,
     ItemFormComponent
   ]

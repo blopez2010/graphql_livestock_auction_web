@@ -59,7 +59,7 @@ export class ItemFormComponent implements OnInit {
 
     this.filteredPeople = this.people.filter(
       option =>
-        option.name.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+        option.fullName.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
     );
   }
 
