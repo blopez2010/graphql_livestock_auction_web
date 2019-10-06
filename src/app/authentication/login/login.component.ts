@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     private sessionService: SessionService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   //#region Private methods
 
