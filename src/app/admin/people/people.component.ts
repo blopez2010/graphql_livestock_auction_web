@@ -1,120 +1,148 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { People, Response } from 'src/app/models';
 import { PeopleService } from 'src/app/services/people.service';
 import { PeopleFormComponent } from '../../components/people-form/people-form.component';
+import { PaginatedResponse } from 'src/app/models/paginatedResponse';
+import { of, merge } from 'rxjs';
 
 @Component({
-  selector: 'lsa-people',
-  templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss']
+	selector: 'lsa-people',
+	templateUrl: './people.component.html',
+	styleUrls: [ './people.component.scss' ]
 })
 export class PeopleComponent implements OnInit {
-  public displayedColumns: string[] = [
-    'name',
-    'nickname',
-    'phoneNumber',
-    'externalIdentifier',
-    'address',
-    'isBanned',
-    'bannedDescription',
-    'more'
-  ];
-  public dataSource: any = new MatTableDataSource<any>([]);
-  public showSpinner = false;
-  public searchForm: FormGroup;
+	public displayedColumns: string[] = [
+		'name',
+		'nickname',
+		'phoneNumber',
+		'externalIdentifier',
+		'address',
+		'isBanned',
+		'bannedDescription',
+		'more'
+	];
+	public dataSource: any = new MatTableDataSource<any>([]);
+	public showSpinner = false;
+	public searchForm: FormGroup;
+	public totalCount = 0;
+	public isRateLimitReached = false;
 
-  constructor(
-    private builder: FormBuilder,
-    private dialog: MatDialog,
-    private peopleService: PeopleService,
-    private toastrService: ToastrService
-  ) {}
+	constructor(
+		private builder: FormBuilder,
+		private dialog: MatDialog,
+		private peopleService: PeopleService,
+		private toastrService: ToastrService
+	) {}
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+	@ViewChild(MatPaginator, { static: true })
+	paginator: MatPaginator;
 
-  //#region Private methods
+	@ViewChild(MatSort, { static: true })
+	sort: MatSort;
 
-  private updateSuccess(result: Response, successText: string) {
-    const filter = this.dataSource.filter;
-    this.showSpinner = result.isLoading;
-    this.toastrService.success(successText);
-    this.dataSource = new MatTableDataSource<any>(
-      this.peopleService.getCacheData()
-    );
-    this.searchForm.get('search').setValue(filter);
-  }
+	//#region Private methods
 
-  //#endregion
+	private updateSuccess(result: Response, successText: string) {
+		const filter = this.dataSource.filter;
+		this.showSpinner = result.isLoading;
+		this.toastrService.success(successText);
+		this.dataSource = new MatTableDataSource<People>(this.peopleService.getCacheData());
+		this.searchForm.get('search').setValue(filter);
+	}
 
-  ngOnInit() {
-    this.searchForm = this.builder.group({
-      search: ''
-    });
+	//#endregion
 
-    this.searchForm
-      .get('search')
-      .valueChanges.pipe(debounceTime(300))
-      .subscribe(value => {
-        this.dataSource.filter = value.trim().toLowerCase();
-      });
+	ngOnInit() {
+		this.searchForm = this.builder.group({
+			search: ''
+		});
 
-    this.showSpinner = true;
-    this.peopleService.get().subscribe(
-      (result: Response) => {
-        this.dataSource = new MatTableDataSource<any>(result.data);
-        this.showSpinner = result.isLoading;
-        this.dataSource.paginator = this.paginator;
-      },
-      () => (this.showSpinner = false)
-    );
-  }
+		this.searchForm.get('search').valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+			this.dataSource.filter = value.trim().toLowerCase();
+		});
 
-  //#region Public methods
+		this.dataSource.sort = this.sort;
+	}
 
-  public addPeople() {
-    this.dialog
-      .open(PeopleFormComponent, {
-        disableClose: true,
-        maxWidth: '30em'
-      })
-      .afterClosed()
-      .subscribe(data => {
-        if (data) {
-          this.peopleService.create(data).subscribe((result: Response) => {
-            this.showSpinner = result.isLoading;
-            this.toastrService.success('Persona agregada');
-            this.dataSource = new MatTableDataSource<any>(
-              this.peopleService.getCacheData()
-            );
-          });
-        }
-      });
-  }
+	// tslint:disable-next-line: use-lifecycle-interface
+	public ngAfterViewInit() {
+		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+		merge(
+			this.sort.sortChange,
+			this.paginator.page,
+			this.searchForm.get('search').valueChanges.pipe(debounceTime(300))
+		)
+			.pipe(
+				startWith({ people: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse),
+				switchMap(() => {
+					// this.showSpinner = true;
+					return this.peopleService.getPaginated(
+						this.dataSource.filter,
+						this.sort.active || 'name',
+						this.sort.direction.toUpperCase() || 'ASC',
+						this.paginator.pageIndex,
+						this.paginator.pageSize
+					);
+				}),
+				map((result) => {
+					// this.showSpinner = false;
+					this.totalCount = result.totalCount;
+					this.isRateLimitReached = false;
+					return result.people;
+				}),
+				catchError((error) => {
+					// this.showSpinner = false;
+					this.isRateLimitReached = true;
+					return of([]);
+				})
+			)
+			.subscribe((data) => {
+				this.dataSource = new MatTableDataSource<People>(data);
+			});
+	}
 
-  public editPeople(element: People) {
-    // const dataCached = this.peopleService.getPeopleIdFromCache(element.id);
+	//#region Public methods
 
-    this.dialog
-      .open(PeopleFormComponent, {
-        disableClose: true,
-        maxWidth: '30em',
-        data: element
-      })
-      .afterClosed()
-      .subscribe(data => {
-        if (data) {
-          this.peopleService.update(data).subscribe((result: Response) => {
-            this.updateSuccess(result, 'Persona actualizada');
-          });
-        }
-      });
-  }
+	public addPeople() {
+		this.dialog
+			.open(PeopleFormComponent, {
+				disableClose: true,
+				maxWidth: '30em'
+			})
+			.afterClosed()
+			.subscribe((data) => {
+				if (data) {
+					this.peopleService.create(data).subscribe((result: Response) => {
+						this.showSpinner = result.isLoading;
+						this.toastrService.success('Persona agregada');
+						this.dataSource = new MatTableDataSource<any>(this.peopleService.getCacheData());
+					});
+				}
+			});
+	}
 
-  //#endregion
+	public editPeople(element: People) {
+		// const dataCached = this.peopleService.getPeopleIdFromCache(element.id);
+
+		this.dialog
+			.open(PeopleFormComponent, {
+				disableClose: true,
+				maxWidth: '30em',
+				data: element
+			})
+			.afterClosed()
+			.subscribe((data) => {
+				if (data) {
+					this.peopleService.update(data).subscribe((result: Response) => {
+						this.updateSuccess(result, 'Persona actualizada');
+					});
+				}
+			});
+	}
+
+	//#endregion
 }
