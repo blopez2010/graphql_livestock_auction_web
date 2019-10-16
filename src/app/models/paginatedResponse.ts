@@ -1,7 +1,5 @@
-import { People } from '.';
-
-export interface PaginatedResponse {
-	people: People[];
+export interface PaginatedResponse<T> {
+	data: T[];
 	offset: number;
 	limit: number;
 	totalCount: number;
