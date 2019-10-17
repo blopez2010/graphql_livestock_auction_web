@@ -1,8 +1,7 @@
 {
-	"extends": "tslint:recommended",
+	"extends": [ "tslint:recommended", "tslint-config-prettier" ],
 	"rules": {
 		"max-line-length": [ true, 120 ],
-		"indent": true,
 		"array-type": false,
 		"arrow-parens": false,
 		"deprecation": {
@@ -49,7 +48,7 @@
 		"template-no-negated-async": true,
 		"use-lifecycle-interface": true,
 		"use-pipe-transform-interface": true,
-		"no-string-literal": false,
+		"no-string-literal": false
 	},
 	"rulesDirectory": [ "codelyzer" ]
 }

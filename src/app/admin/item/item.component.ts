@@ -110,9 +110,7 @@ export class ItemComponent implements OnInit {
 			this.searchForm.get('eventId').valueChanges.pipe(debounceTime(300))
 		)
 			.pipe(
-				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<
-					Item
-				>),
+				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<Item>),
 				switchMap(() => {
 					this.showSpinner = true;
 					return this.itemsService.getByEventPaginated(
@@ -155,9 +153,7 @@ export class ItemComponent implements OnInit {
 			.afterClosed()
 			.subscribe((data) => {
 				if (data) {
-					this.itemsService
-						.create(data)
-						.subscribe((result: Response) => this.updateSuccess(result, 'Item agregado'));
+					this.itemsService.create(data).subscribe((result: Response) => this.updateSuccess(result, 'Item agregado'));
 				}
 			});
 	}
