@@ -71,13 +71,17 @@ export class PeopleComponent implements OnInit {
 	// tslint:disable-next-line: use-lifecycle-interface
 	public ngAfterViewInit() {
 		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+		this.searchForm.get('search').valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
+
 		merge(
 			this.sort.sortChange,
 			this.paginator.page,
 			this.searchForm.get('search').valueChanges.pipe(debounceTime(300))
 		)
 			.pipe(
-				startWith({ people: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse),
+				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<
+					People
+				>),
 				switchMap(() => {
 					// this.showSpinner = true;
 					return this.peopleService.getPaginated(
@@ -92,7 +96,7 @@ export class PeopleComponent implements OnInit {
 					// this.showSpinner = false;
 					this.totalCount = result.totalCount;
 					this.isRateLimitReached = false;
-					return result.people;
+					return result.data;
 				}),
 				catchError((error) => {
 					// this.showSpinner = false;

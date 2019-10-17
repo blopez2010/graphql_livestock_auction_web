@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -14,80 +7,68 @@ import { HelpersService } from 'src/app/shared/helpers.service';
 import { Event } from '../../models';
 
 @Component({
-  selector: 'lsa-events-filter',
-  templateUrl: './events-filter.component.html',
-  styleUrls: ['./events-filter.component.scss']
+	selector: 'lsa-events-filter',
+	templateUrl: './events-filter.component.html',
+	styleUrls: [ './events-filter.component.scss' ]
 })
 export class EventsFilterComponent implements OnInit {
-  public filteredEvents: any[];
-  public events: any[];
-  public activeEvent: Event;
+	public filteredEvents: any[];
+	public events: any[];
+	public activeEvent: Event;
+	public form: FormGroup;
 
-  constructor(
-    private route: ActivatedRoute,
-    private helpersService: HelpersService,
-    private formBuilder: FormBuilder
-  ) {}
+	constructor(
+		private route: ActivatedRoute,
+		private helpersService: HelpersService,
+		private formBuilder: FormBuilder
+	) {}
 
-  @Input() form: FormGroup;
-  @Output() selectedEventChange = new EventEmitter<any>();
-  @Output() searchChange = new EventEmitter<string>();
-  @ViewChild('matAutocomplete', { static: true })
-  matAutocomplete: MatAutocomplete;
+	@Output() selectedEventChange = new EventEmitter<any>();
+	@ViewChild('matAutocomplete', { static: true })
+	matAutocomplete: MatAutocomplete;
 
-  ngOnInit() {
-    this.events = this.route.data['value']['events'];
-    this.activeEvent = this.route.data['value']['activeEvent'];
+	ngOnInit() {
+		this.events = this.route.data['value']['events'];
+		this.activeEvent = this.route.data['value']['activeEvent'];
 
-    this.form = this.formBuilder.group({
-      event: '',
-      search: ''
-    });
+		this.form = this.formBuilder.group({
+			event: ''
+		});
 
-    this.form.get('event').valueChanges.subscribe(name => {
-      if (typeof name === 'string') {
-        if (name) {
-          this.filter(name);
-        } else {
-          this.events.slice();
-        }
-      }
+		this.form.get('event').valueChanges.subscribe((event) => {
+			if (typeof event === 'string') {
+				if (event) {
+					this.filter(event);
+				} else {
+					this.events.slice();
+				}
+			}
 
-      if (this.filteredEvents.length === 1) {
-        this.selectedEventChange.emit(this.filteredEvents[0]);
-      }
-    });
+			if (typeof event === 'object') {
+				this.selectedEventChange.emit(event);
+			}
+		});
 
-    this.form
-      .get('event')
-      .setValue(
-        this.activeEvent
-          ? `${this.activeEvent.name} - ${new Date(
-              this.activeEvent.createdAt
-            ).getFullYear()}`
-          : ''
-      );
+		this.form
+			.get('event')
+			.setValue(
+				this.activeEvent
+					? `${this.activeEvent.name} - ${new Date(this.activeEvent.createdAt).getFullYear()}`
+					: ''
+			);
 
-    this.displayFn = this.displayFn.bind(this);
+		this.displayFn = this.displayFn.bind(this);
+	}
 
-    this.form
-      .get('search')
-      .valueChanges.pipe(debounceTime(300))
-      .subscribe(value => {
-        this.searchChange.emit(value);
-      });
-  }
+	public displayFn(item) {
+		return this.helpersService.displayFn(item, this.matAutocomplete);
+	}
 
-  public displayFn(item) {
-    return this.helpersService.displayFn(item, this.matAutocomplete);
-  }
+	private filter(name: string) {
+		const filterValue = name.toLowerCase();
 
-  private filter(name: string) {
-    const filterValue = name.toLowerCase();
-
-    this.filteredEvents = this.events.filter(
-      option =>
-        option.eventName.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
-    );
-  }
+		this.filteredEvents = this.events.filter(
+			(option) => option.eventName.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
+		);
+	}
 }

@@ -47,7 +47,7 @@ export class PeopleService {
 		sortDirection: string,
 		offset: number,
 		limit: number
-	): Observable<PaginatedResponse> {
+	): Observable<PaginatedResponse<People>> {
 		return this.apollo
 			.query({
 				query: allPeoplePaginated,
@@ -63,7 +63,7 @@ export class PeopleService {
 			})
 			.pipe(
 				map((result) => ({
-					people: result.data['allPeoplePaginated'].people,
+					data: result.data['allPeoplePaginated'].people,
 					totalCount: result.data['allPeoplePaginated'].totalCount,
 					limit: result.data['allPeoplePaginated'].limit,
 					offset: result.data['allPeoplePaginated'].offset,
