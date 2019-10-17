@@ -42,7 +42,7 @@ export class PeopleService {
 	}
 
 	public getPaginated(
-		name: string,
+		filter: string,
 		sortColumn: string,
 		sortDirection: string,
 		offset: number,
@@ -53,7 +53,7 @@ export class PeopleService {
 				query: allPeoplePaginated,
 				variables: {
 					input: {
-						name,
+						filter,
 						sortColumn,
 						sortDirection,
 						offset,
