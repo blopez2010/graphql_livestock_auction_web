@@ -1,6 +1,15 @@
 <div class="container" [ngClass]="{ 'blur-background': showSpinner }">
-  <lsa-events-filter (selectedEventChange)="selectedEventChange($event)">
-  </lsa-events-filter>
+  <div>
+    <button mat-raised-button color="primary" (click)="addItem()">Agregar Item</button>
+  </div>
+  <lsa-auto-complete 
+    [list]="events" 
+    [searchField]="'name'" 
+    [defaultValue]="activeEvent" 
+    [placeholder]="'Eventos'" 
+    [lookupField]="'eventName'" 
+    (selectedItemChange)="selectedEventChange($event)">
+  </lsa-auto-complete>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
 
