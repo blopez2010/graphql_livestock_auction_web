@@ -1,7 +1,4 @@
 <div class="container" [ngClass]="{ 'blur-background': showSpinner }">
-  <div>
-    <button mat-raised-button color="primary" (click)="addPeople()">Agregar Persona</button>
-  </div>
   <form [formGroup]="searchForm" novalidate>
     <mat-form-field class="margin--top filter">
       <input matInput placeholder="Filtrar" formControlName="search">
@@ -73,3 +70,4 @@
   </div>
 </div>
 <mat-spinner class="center-spinner" *ngIf="showSpinner"></mat-spinner>
+<lsa-add-button (addClicked)="addPeople()"></lsa-add-button>

@@ -1,7 +1,4 @@
 <div class="container" [ngClass]="{ 'blur-background': showSpinner }">
-  <div>
-    <button mat-raised-button color="primary" (click)="addItem()">Agregar Item</button>
-  </div>
   <lsa-events-filter (selectedEventChange)="selectedEventChange($event)">
   </lsa-events-filter>
   <div class="mat-elevation-z8">
@@ -43,3 +40,4 @@
   </div>
 </div>
 <mat-spinner class="center-spinner" *ngIf="showSpinner"></mat-spinner>
+<lsa-add-button (addClicked)="addItem()"></lsa-add-button>
