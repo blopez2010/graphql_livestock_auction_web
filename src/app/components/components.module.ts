@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { AddButtonComponent } from './add-button/add-button.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
 import { ItemFormControlsComponent } from './item-form-controls/item-form-controls.component';
+import { LoaderComponent } from './loader/loader.component';
 import { PeopleFormControlsComponent } from './people-form-controls/people-form-controls.component';
 import { PeopleFormComponent } from './people-form/people-form.component';
 
@@ -16,21 +17,24 @@ import { PeopleFormComponent } from './people-form/people-form.component';
 		PeopleFormControlsComponent,
 		PeopleFormComponent,
 		AutoCompleteComponent,
-		AddButtonComponent
+		AddButtonComponent,
+		LoaderComponent
 	],
 	declarations: [
 		ItemFormControlsComponent,
 		PeopleFormControlsComponent,
 		PeopleFormComponent,
 		AutoCompleteComponent,
-		AddButtonComponent
+		AddButtonComponent,
+		LoaderComponent
 	],
 	exports: [
 		ItemFormControlsComponent,
 		PeopleFormControlsComponent,
 		PeopleFormComponent,
 		AutoCompleteComponent,
-		AddButtonComponent
+		AddButtonComponent,
+		LoaderComponent
 	]
 })
 export class ComponentsModule {}

@@ -1,4 +1,4 @@
-<div class="container" [ngClass]="{ 'blur-background': showSpinner }">
+<div class="container">
   <form [formGroup]="searchForm" novalidate>
     <mat-form-field class="margin--top filter">
       <input matInput placeholder="Filtrar" formControlName="search">
@@ -69,5 +69,4 @@
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons [length]="totalCount" [pageSize]="10"></mat-paginator>
   </div>
 </div>
-<mat-spinner class="center-spinner" *ngIf="showSpinner"></mat-spinner>
 <lsa-add-button (addClicked)="addPeople()"></lsa-add-button>

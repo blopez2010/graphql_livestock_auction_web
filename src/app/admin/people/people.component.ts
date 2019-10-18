@@ -27,7 +27,6 @@ export class PeopleComponent implements OnInit {
 		'more'
 	];
 	public dataSource: any = new MatTableDataSource<any>([]);
-	public showSpinner = false;
 	public searchForm: FormGroup;
 	public totalCount = 0;
 	public isRateLimitReached = false;
@@ -68,7 +67,6 @@ export class PeopleComponent implements OnInit {
 			.pipe(
 				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<People>),
 				switchMap(() => {
-					// this.showSpinner = true;
 					return this.peopleService.getPaginated(
 						this.dataSource.filter,
 						this.sort.active || 'name',
@@ -78,13 +76,11 @@ export class PeopleComponent implements OnInit {
 					);
 				}),
 				map((result) => {
-					// this.showSpinner = false;
 					this.totalCount = result.totalCount;
 					this.isRateLimitReached = false;
 					return result.data;
 				}),
 				catchError((error) => {
-					// this.showSpinner = false;
 					this.isRateLimitReached = true;
 					return of([]);
 				})
@@ -106,7 +102,6 @@ export class PeopleComponent implements OnInit {
 			.subscribe((data) => {
 				if (data) {
 					this.peopleService.create(data).subscribe((result: Response) => {
-						this.showSpinner = result.isLoading;
 						this.toastrService.success('Persona agregada');
 						this.dataSource = new MatTableDataSource<any>(this.peopleService.getCacheData());
 					});
@@ -137,7 +132,6 @@ export class PeopleComponent implements OnInit {
 
 	private updateSuccess(result: Response, successText: string) {
 		const filter = this.dataSource.filter;
-		this.showSpinner = result.isLoading;
 		this.toastrService.success(successText);
 		this.dataSource = new MatTableDataSource<People>(this.peopleService.getCacheData());
 		this.searchForm.get('search').setValue(filter);
