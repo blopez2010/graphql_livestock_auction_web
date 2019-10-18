@@ -20,7 +20,6 @@ import { ItemFormComponent } from './item-form/item-form.component';
 export class ItemComponent implements OnInit {
 	public displayedColumns: string[] = [ 'ordinal', 'ownerName', 'description', 'more' ];
 	public dataSource: any = new MatTableDataSource<any>([]);
-	public showSpinner = false;
 	public isRateLimitReached = false;
 	public totalCount = 0;
 	public searchForm: FormGroup;
@@ -60,8 +59,6 @@ export class ItemComponent implements OnInit {
 		this.activeEvent = resolvedActiveEvent
 			? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
 			: '';
-		// this.showSpinner = true;
-		// this.loadData(this.route.data['value']['activeEvent']);
 	}
 
 	// tslint:disable-next-line: use-life-cycle-interface
@@ -77,7 +74,6 @@ export class ItemComponent implements OnInit {
 			.pipe(
 				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<Item>),
 				switchMap(() => {
-					this.showSpinner = true;
 					return this.itemsService.getByEventPaginated(
 						this.searchForm.get('eventId').value,
 						this.dataSource.filter,
@@ -88,13 +84,11 @@ export class ItemComponent implements OnInit {
 					);
 				}),
 				map((result) => {
-					this.showSpinner = false;
 					this.totalCount = result.totalCount;
 					this.isRateLimitReached = false;
 					return result.data;
 				}),
-				catchError((error) => {
-					this.showSpinner = false;
+				catchError(() => {
 					this.isRateLimitReached = true;
 					return of([]);
 				})
@@ -182,13 +176,11 @@ export class ItemComponent implements OnInit {
 			return 1;
 		});
 		this.dataSource = new MatTableDataSource<any>(this.getDisplayData(items));
-		this.showSpinner = itemsResult.isLoading;
 		this.dataSource.paginator = this.paginator;
 	}
 
 	private updateSuccess(result: Response, successText: string) {
 		const filter = this.dataSource.filter;
-		this.showSpinner = result.isLoading;
 		this.toastrService.success(successText);
 		this.loadItemsData({
 			data: this.itemsService.getCacheData(new Date(result.data.event.createdAt).getFullYear()),

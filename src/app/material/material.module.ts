@@ -13,6 +13,7 @@ import {
 	MatListModule,
 	MatMenuModule,
 	MatPaginatorModule,
+	MatProgressBarModule,
 	MatProgressSpinnerModule,
 	MatRadioModule,
 	MatSelectModule,
@@ -47,7 +48,8 @@ import {
 		MatCardModule,
 		MatPaginatorModule,
 		MatSortModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		MatProgressBarModule
 	],
 	exports: [
 		MatAutocompleteModule,
@@ -71,7 +73,8 @@ import {
 		MatCardModule,
 		MatPaginatorModule,
 		MatSortModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		MatProgressBarModule
 	]
 })
 export class MaterialModule {}

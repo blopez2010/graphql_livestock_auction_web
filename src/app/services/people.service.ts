@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import {
 	allPeople,
@@ -13,6 +13,7 @@ import {
 } from '../graphql/types-definitions';
 import { People, Response } from '../models';
 import { PaginatedResponse } from '../models/paginatedResponse';
+import { LoaderService } from './loader.service';
 
 @Injectable({
 	providedIn: 'root'

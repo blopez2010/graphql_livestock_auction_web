@@ -18,7 +18,6 @@ import { TransactionService } from '../../services/transaction.service';
 })
 export class AuctionComponent implements OnInit {
 	public auctionForm: FormGroup;
-	public showSpinner: boolean;
 	public selectedBuyer: any = {};
 	public destroyed = new Subject<any>();
 	public people: People[] = [];
@@ -53,7 +52,6 @@ export class AuctionComponent implements OnInit {
 			.subscribe((response) => {
 				if (response) {
 					this.peopleService.create(response).subscribe((result: Response) => {
-						this.showSpinner = result.isLoading;
 						this.toastrService.success('Persona agregada');
 						this.selectedBuyer = {
 							...result.data,
