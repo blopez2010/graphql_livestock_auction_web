@@ -20,20 +20,11 @@ export class LoginComponent implements OnInit {
 		private toastr: ToastrService
 	) {}
 
-	//#region Private methods
-
-	private initForm() {
-		this.loginForm = this.formBuilder.group({
-			user: [ '', Validators.required ],
-			password: [ '', Validators.required ]
-		});
-	}
-
 	//#endregion
 
 	//#region Public methods
 
-	ngOnInit() {
+	public ngOnInit() {
 		this.initForm();
 	}
 
@@ -48,6 +39,15 @@ export class LoginComponent implements OnInit {
 				}
 			);
 		}
+	}
+
+	//#region Private methods
+
+	private initForm() {
+		this.loginForm = this.formBuilder.group({
+			user: [ '', Validators.required ],
+			password: [ '', Validators.required ]
+		});
 	}
 
 	//#endregion

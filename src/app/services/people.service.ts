@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import {
-	allPeoplePaginated,
 	allPeople,
+	allPeoplePaginated,
 	createPeople,
 	getItemById,
 	updatePeople,

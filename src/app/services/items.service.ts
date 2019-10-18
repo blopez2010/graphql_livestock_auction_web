@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import {
 	allItems,
 	getItemById,
 	getItemByOrdinal,
 	getItemsByEvent,
+	getItemsByEventPaginated,
 	getItemsCountDown,
-	getTotalItems,
-	getItemsByEventPaginated
+	getTotalItems
 } from '../graphql/types-definitions';
 import { createItem, updateItem, updateItemById } from '../graphql/types-definitions/items/mutations';
 import { Item, Response } from '../models';
@@ -186,10 +187,7 @@ export class ItemsService {
 							year: new Date(data.event.createdAt).getFullYear()
 						},
 						data: {
-							getItemsByEvent: [
-								...this.getCacheData(new Date(data.event.createdAt).getFullYear()),
-								data
-							]
+							getItemsByEvent: [ ...this.getCacheData(new Date(data.event.createdAt).getFullYear()), data ]
 						}
 					});
 
@@ -201,7 +199,7 @@ export class ItemsService {
 			);
 	}
 
-	update(item: any): Observable<Response> {
+	public update(item: any): Observable<Response> {
 		return this.apollo
 			.mutate({
 				mutation: updateItem,

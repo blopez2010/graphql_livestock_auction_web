@@ -1,19 +1,20 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from "@angular/core/testing";
-import { TokenStorageService } from "./token-storage.service";
+import { inject, TestBed } from '@angular/core/testing';
 
-describe("Service: TokenStorage", () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TokenStorageService]
-    });
-  });
+import { TokenStorageService } from './token-storage.service';
 
-  it("should ...", inject(
-    [TokenStorageService],
-    (service: TokenStorageService) => {
-      expect(service).toBeTruthy();
-    }
-  ));
+describe('Service: TokenStorage', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [ TokenStorageService ]
+		});
+	});
+
+	it(
+		'should ...',
+		inject([ TokenStorageService ], (service: TokenStorageService) => {
+			expect(service).toBeTruthy();
+		})
+	);
 });

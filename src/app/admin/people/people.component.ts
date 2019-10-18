@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, startWith, switchMap, map, catchError } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { catchError, debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { People, Response } from 'src/app/models';
 import { PeopleService } from 'src/app/services/people.service';
+
 import { PeopleFormComponent } from '../../components/people-form/people-form.component';
-import { PaginatedResponse } from 'src/app/models/paginatedResponse';
-import { of, merge } from 'rxjs';
+import { PaginatedResponse } from '../../models/paginatedResponse';
 
 @Component({
 	selector: 'lsa-people',
@@ -31,6 +32,12 @@ export class PeopleComponent implements OnInit {
 	public totalCount = 0;
 	public isRateLimitReached = false;
 
+	@ViewChild(MatPaginator, { static: true })
+	public paginator: MatPaginator;
+
+	@ViewChild(MatSort, { static: true })
+	public sort: MatSort;
+
 	constructor(
 		private builder: FormBuilder,
 		private dialog: MatDialog,
@@ -38,25 +45,9 @@ export class PeopleComponent implements OnInit {
 		private toastrService: ToastrService
 	) {}
 
-	@ViewChild(MatPaginator, { static: true })
-	paginator: MatPaginator;
-
-	@ViewChild(MatSort, { static: true })
-	sort: MatSort;
-
-	//#region Private methods
-
-	private updateSuccess(result: Response, successText: string) {
-		const filter = this.dataSource.filter;
-		this.showSpinner = result.isLoading;
-		this.toastrService.success(successText);
-		this.dataSource = new MatTableDataSource<People>(this.peopleService.getCacheData());
-		this.searchForm.get('search').setValue(filter);
-	}
-
 	//#endregion
 
-	ngOnInit() {
+	public ngOnInit() {
 		this.searchForm = this.builder.group({
 			search: ''
 		});
@@ -68,20 +59,14 @@ export class PeopleComponent implements OnInit {
 		this.dataSource.sort = this.sort;
 	}
 
-	// tslint:disable-next-line: use-lifecycle-interface
+	// tslint:disable-next-line: use-life-cycle-interface
 	public ngAfterViewInit() {
 		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 		this.searchForm.get('search').valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
 
-		merge(
-			this.sort.sortChange,
-			this.paginator.page,
-			this.searchForm.get('search').valueChanges.pipe(debounceTime(300))
-		)
+		merge(this.sort.sortChange, this.paginator.page, this.searchForm.get('search').valueChanges.pipe(debounceTime(300)))
 			.pipe(
-				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<
-					People
-				>),
+				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<People>),
 				switchMap(() => {
 					// this.showSpinner = true;
 					return this.peopleService.getPaginated(
@@ -146,6 +131,16 @@ export class PeopleComponent implements OnInit {
 					});
 				}
 			});
+	}
+
+	//#region Private methods
+
+	private updateSuccess(result: Response, successText: string) {
+		const filter = this.dataSource.filter;
+		this.showSpinner = result.isLoading;
+		this.toastrService.success(successText);
+		this.dataSource = new MatTableDataSource<People>(this.peopleService.getCacheData());
+		this.searchForm.get('search').setValue(filter);
 	}
 
 	//#endregion

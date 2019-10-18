@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { ActiveEventResolver } from '../shared/resolvers/active-event.resolver';
 import { EventsResolver } from '../shared/resolvers/events.resolver';
 import { PeopleResolver } from '../shared/resolvers/people.resolver';

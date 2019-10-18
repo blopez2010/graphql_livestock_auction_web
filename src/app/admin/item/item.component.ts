@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatAutocomplete, MatDialog, MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatAutocomplete, MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PeopleService } from 'src/app/services/people.service';
-import { Event, Item, Response } from '../../models';
-import { ItemsService } from '../../services/items.service';
-import { ItemFormComponent } from './item-form/item-form.component';
 import { merge, of } from 'rxjs';
-import { debounceTime, switchMap, startWith, map, catchError } from 'rxjs/operators';
-import { PaginatedResponse } from 'src/app/models/paginatedResponse';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { catchError, debounceTime, map, startWith, switchMap } from 'rxjs/operators';
+
+import { Event, Item, Response } from '../../models';
+import { PaginatedResponse } from '../../models/paginatedResponse';
+import { ItemsService } from '../../services/items.service';
+import { PeopleService } from '../../services/people.service';
+import { ItemFormComponent } from './item-form/item-form.component';
 
 @Component({
 	selector: 'lsa-item',
@@ -26,6 +27,15 @@ export class ItemComponent implements OnInit {
 	public events: Event[];
 	public activeEvent: string;
 
+	@ViewChild(MatPaginator, { static: true })
+	public paginator: MatPaginator;
+
+	@ViewChild('matAutocomplete', { static: true })
+	public matAutocomplete: MatAutocomplete;
+
+	@ViewChild(MatSort, { static: true })
+	public sort: MatSort;
+
 	private people: Response[];
 	private selectedEventId: string;
 
@@ -38,61 +48,9 @@ export class ItemComponent implements OnInit {
 		private formBuilder: FormBuilder
 	) {}
 
-	@ViewChild(MatPaginator, { static: true })
-	paginator: MatPaginator;
-
-	@ViewChild('matAutocomplete', { static: true })
-	matAutocomplete: MatAutocomplete;
-
-	@ViewChild(MatSort, { static: true })
-	sort: MatSort;
-
-	//#region Private methods
-
-	private getDisplayData(data: Item[]) {
-		return data.map((d) => {
-			let ownerName = d.owner.name;
-			if (d.owner.nickname) {
-				ownerName = `${d.owner.name} (${d.owner.nickname})`;
-			}
-
-			return {
-				...d,
-				ownerName,
-				eventDescription: `${d.event.name} - ${new Date(d.event.createdAt).getFullYear()}`
-			};
-		});
-	}
-
-	private loadItemsData(itemsResult: Response) {
-		const items = itemsResult.data.sort((a, b) => {
-			if (b.ordinal > a.ordinal) {
-				return -1;
-			} else if (a.ordinal === b.ordinal) {
-				return 0;
-			}
-
-			return 1;
-		});
-		this.dataSource = new MatTableDataSource<any>(this.getDisplayData(items));
-		this.showSpinner = itemsResult.isLoading;
-		this.dataSource.paginator = this.paginator;
-	}
-
-	private updateSuccess(result: Response, successText: string) {
-		const filter = this.dataSource.filter;
-		this.showSpinner = result.isLoading;
-		this.toastrService.success(successText);
-		this.loadItemsData({
-			data: this.itemsService.getCacheData(new Date(result.data.event.createdAt).getFullYear()),
-			isLoading: false
-		});
-		this.searchEventChange(filter);
-	}
-
 	//#endregion
 
-	ngOnInit() {
+	public ngOnInit() {
 		this.searchForm = this.formBuilder.group({
 			eventId: ''
 		});
@@ -106,7 +64,7 @@ export class ItemComponent implements OnInit {
 		// this.loadData(this.route.data['value']['activeEvent']);
 	}
 
-	// tslint:disable-next-line: use-lifecycle-interface
+	// tslint:disable-next-line: use-life-cycle-interface
 	public ngAfterViewInit() {
 		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 		this.searchForm.get('eventId').valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
@@ -194,6 +152,49 @@ export class ItemComponent implements OnInit {
 
 	public searchEventChange(text: string) {
 		this.dataSource.filter = text.trim().toLowerCase();
+	}
+
+	//#region Private methods
+
+	private getDisplayData(data: Item[]) {
+		return data.map((d) => {
+			let ownerName = d.owner.name;
+			if (d.owner.nickname) {
+				ownerName = `${d.owner.name} (${d.owner.nickname})`;
+			}
+
+			return {
+				...d,
+				ownerName,
+				eventDescription: `${d.event.name} - ${new Date(d.event.createdAt).getFullYear()}`
+			};
+		});
+	}
+
+	private loadItemsData(itemsResult: Response) {
+		const items = itemsResult.data.sort((a, b) => {
+			if (b.ordinal > a.ordinal) {
+				return -1;
+			} else if (a.ordinal === b.ordinal) {
+				return 0;
+			}
+
+			return 1;
+		});
+		this.dataSource = new MatTableDataSource<any>(this.getDisplayData(items));
+		this.showSpinner = itemsResult.isLoading;
+		this.dataSource.paginator = this.paginator;
+	}
+
+	private updateSuccess(result: Response, successText: string) {
+		const filter = this.dataSource.filter;
+		this.showSpinner = result.isLoading;
+		this.toastrService.success(successText);
+		this.loadItemsData({
+			data: this.itemsService.getCacheData(new Date(result.data.event.createdAt).getFullYear()),
+			isLoading: false
+		});
+		this.searchEventChange(filter);
 	}
 	//#endregion
 }

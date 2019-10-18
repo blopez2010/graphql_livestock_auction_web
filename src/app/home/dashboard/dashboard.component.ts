@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lsa-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+	selector: 'lsa-dashboard',
+	templateUrl: './dashboard.component.html',
+	styleUrls: [ './dashboard.component.scss' ]
 })
-export class DashboardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class DashboardComponent {
+	constructor() {}
 }

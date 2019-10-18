@@ -2,39 +2,34 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TokenStorageService {
-  constructor() {}
+	constructor() {}
 
-  private hasExpired(key: string) {
-    const token = localStorage.getItem(key);
-    if (!token) {
-      return true;
-    }
+	public saveToken(key: string, token: any, isLocal: any, expirationMin: number) {
+		const expirationMS = expirationMin * 60 * 1000;
+		const data = {
+			value: token,
+			isLocal,
+			timestamp: new Date().getTime() + expirationMS
+		};
+		localStorage.setItem(key, JSON.stringify(data));
+		return token;
+	}
 
-    const data = JSON.parse(token);
-    return new Date().getTime() > data.timestamp;
-  }
+	public getToken(key: string) {
+		if (this.hasExpired(key)) {
+			return null;
+		}
 
-  public saveToken(
-    key: string,
-    token: any,
-    isLocal: any,
-    expirationMin: number
-  ) {
-    const expirationMS = expirationMin * 60 * 1000;
-    const data = {
-      value: token,
-      isLocal,
-      timestamp: new Date().getTime() + expirationMS
-    };
-    localStorage.setItem(key, JSON.stringify(data));
-    return token;
-  }
+		return JSON.parse(localStorage.getItem(key));
+	}
 
-  public getToken(key: string) {
-    if (this.hasExpired(key)) {
-      return null;
-    }
+	private hasExpired(key: string) {
+		const token = localStorage.getItem(key);
+		if (!token) {
+			return true;
+		}
 
-    return JSON.parse(localStorage.getItem(key));
-  }
+		const data = JSON.parse(token);
+		return new Date().getTime() > data.timestamp;
+	}
 }

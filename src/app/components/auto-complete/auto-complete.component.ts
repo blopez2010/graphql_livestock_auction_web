@@ -1,7 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { HelpersService } from 'src/app/shared/helpers.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material';
+import { HelpersService } from 'src/app/shared/helpers.service';
 
 @Component({
 	selector: 'lsa-auto-complete',
@@ -12,22 +12,22 @@ export class AutoCompleteComponent implements OnInit {
 	public filteredList: any[];
 	public form: FormGroup;
 
+	@Input() public list: any[] = [];
+	@Input() public searchField = '';
+	@Input() public lookupField = '';
+	@Input() public defaultValue: any;
+	@Input() public placeholder: any;
+	@Input() public showAddButton = false;
+	@Output() public selectedItemChange = new EventEmitter<any>();
+	@Output() public addClicked = new EventEmitter<any>();
+	@ViewChild('matAutocomplete', { static: true })
+	public matAutocomplete: MatAutocomplete;
+	@ViewChild(MatAutocompleteTrigger, { static: true })
+	public matAutocompleteTrigger: MatAutocompleteTrigger;
+
 	constructor(private helpersService: HelpersService, private formBuilder: FormBuilder) {}
 
-	@Input() list: any[] = [];
-	@Input() searchField = '';
-	@Input() lookupField = '';
-	@Input() defaultValue: any;
-	@Input() placeholder: any;
-	@Input() showAddButton = false;
-	@Output() selectedItemChange = new EventEmitter<any>();
-	@Output() addClicked = new EventEmitter<any>();
-	@ViewChild('matAutocomplete', { static: true })
-	matAutocomplete: MatAutocomplete;
-	@ViewChild(MatAutocompleteTrigger, { static: true })
-	matAutocompleteTrigger: MatAutocompleteTrigger;
-
-	ngOnInit() {
+	public ngOnInit() {
 		if (!this.lookupField) {
 			this.lookupField = this.searchField;
 		}

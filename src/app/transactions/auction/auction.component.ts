@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { ItemsService } from 'src/app/services/items.service';
-import { PeopleService } from 'src/app/services/people.service';
-import { TransactionService } from 'src/app/services/transaction.service';
-import { Event, People, Response } from '../../models';
-import { PeopleFormComponent } from 'src/app/components/people-form/people-form.component';
-import { MatDialog } from '@angular/material';
+
+import { PeopleFormComponent } from '../../components/people-form/people-form.component';
+import { People, Response } from '../../models';
+import { ItemsService } from '../../services/items.service';
+import { PeopleService } from '../../services/people.service';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
 	selector: 'lsa-auction',
@@ -18,8 +18,8 @@ import { MatDialog } from '@angular/material';
 })
 export class AuctionComponent implements OnInit {
 	public auctionForm: FormGroup;
-	showSpinner: boolean;
-	selectedBuyer: any = {};
+	public showSpinner: boolean;
+	public selectedBuyer: any = {};
 	public destroyed = new Subject<any>();
 	public people: People[] = [];
 	public countDown = 0;
@@ -36,74 +36,7 @@ export class AuctionComponent implements OnInit {
 		private dialog: MatDialog
 	) {}
 
-	private initForm() {
-		this.auctionForm = this.formBuilder.group({
-			item: this.formBuilder.group({
-				id: null,
-				eventId: this.route.data['value']['activeEvent'].id,
-				ordinal: [ null, Validators.required ],
-				description: null,
-				ownerName: [ null, Validators.required ],
-				nickname: null
-			}),
-			transaction: this.formBuilder.group({
-				id: null,
-				description: null,
-				amount: [ null, Validators.required ],
-				totalBuying: 0,
-				countDown: 0,
-				totalItemsCount: 0,
-				totalCount: 0
-			})
-		});
-
-		this.auctionForm.get('item').get('ordinal').valueChanges.subscribe((value) => {
-			if (value) {
-				this.itemsService.getByOrdinal(value, this.route.data['value']['activeEvent'].id).subscribe(
-					(result: Response) => {
-						this.auctionForm.get('item').patchValue({
-							id: result.data['id'],
-							description: result.data['description'],
-							ownerName: result.data['owner']['name'],
-							nickname: result.data['owner']['nickname']
-						});
-					},
-					(err) => {
-						this.auctionForm.get('item').patchValue({
-							description: '',
-							ownerName: '',
-							nickname: ''
-						});
-					}
-				);
-			}
-		});
-	}
-
-	private getTotalBuying() {
-		this.transactionService.getTotalAmountByEvent(this.route.data['value']['activeEvent'].id).subscribe((result) => {
-			this.auctionForm.get('transaction').get('totalBuying').setValue(result.data['total']);
-		});
-		this.getItemsCountDown();
-		this.getTotalCount();
-		this.auctionForm.get('transaction').get('totalCount').setValue(this.totalCount - this.countDown);
-	}
-
-	private getItemsCountDown() {
-		this.itemsService.getItemsCountDown(this.route.data['value']['activeEvent'].id).subscribe((result) => {
-			this.countDown = result.data['count'];
-			this.auctionForm.get('transaction').get('countDown').setValue(result.data['count']);
-		});
-	}
-
-	private getTotalCount() {
-		this.itemsService.getTotalItems(this.route.data['value']['activeEvent'].id).subscribe((result) => {
-			this.totalCount = result.data['count'];
-			this.auctionForm.get('transaction').get('totalItemsCount').setValue(result.data['count']);
-		});
-	}
-
-	ngOnInit() {
+	public ngOnInit() {
 		this.initForm();
 		this.people = this.route.data['value']['people'];
 		this.getTotalBuying();
@@ -117,9 +50,9 @@ export class AuctionComponent implements OnInit {
 				maxWidth: '30em'
 			})
 			.afterClosed()
-			.subscribe((data) => {
-				if (data) {
-					this.peopleService.create(data).subscribe((result: Response) => {
+			.subscribe((response) => {
+				if (response) {
+					this.peopleService.create(response).subscribe((result: Response) => {
 						this.showSpinner = result.isLoading;
 						this.toastrService.success('Persona agregada');
 						this.selectedBuyer = {
@@ -186,5 +119,72 @@ export class AuctionComponent implements OnInit {
 		} else {
 			this.toastrService.warning('Faltan datos!');
 		}
+	}
+
+	private initForm() {
+		this.auctionForm = this.formBuilder.group({
+			item: this.formBuilder.group({
+				id: null,
+				eventId: this.route.data['value']['activeEvent'].id,
+				ordinal: [ null, Validators.required ],
+				description: null,
+				ownerName: [ null, Validators.required ],
+				nickname: null
+			}),
+			transaction: this.formBuilder.group({
+				id: null,
+				description: null,
+				amount: [ null, Validators.required ],
+				totalBuying: 0,
+				countDown: 0,
+				totalItemsCount: 0,
+				totalCount: 0
+			})
+		});
+
+		this.auctionForm.get('item').get('ordinal').valueChanges.subscribe((value) => {
+			if (value) {
+				this.itemsService.getByOrdinal(value, this.route.data['value']['activeEvent'].id).subscribe(
+					(result: Response) => {
+						this.auctionForm.get('item').patchValue({
+							id: result.data['id'],
+							description: result.data['description'],
+							ownerName: result.data['owner']['name'],
+							nickname: result.data['owner']['nickname']
+						});
+					},
+					(err) => {
+						this.auctionForm.get('item').patchValue({
+							description: '',
+							ownerName: '',
+							nickname: ''
+						});
+					}
+				);
+			}
+		});
+	}
+
+	private getTotalBuying() {
+		this.transactionService.getTotalAmountByEvent(this.route.data['value']['activeEvent'].id).subscribe((result) => {
+			this.auctionForm.get('transaction').get('totalBuying').setValue(result.data['total']);
+		});
+		this.getItemsCountDown();
+		this.getTotalCount();
+		this.auctionForm.get('transaction').get('totalCount').setValue(this.totalCount - this.countDown);
+	}
+
+	private getItemsCountDown() {
+		this.itemsService.getItemsCountDown(this.route.data['value']['activeEvent'].id).subscribe((result) => {
+			this.countDown = result.data['count'];
+			this.auctionForm.get('transaction').get('countDown').setValue(result.data['count']);
+		});
+	}
+
+	private getTotalCount() {
+		this.itemsService.getTotalItems(this.route.data['value']['activeEvent'].id).subscribe((result) => {
+			this.totalCount = result.data['count'];
+			this.auctionForm.get('transaction').get('totalItemsCount').setValue(result.data['count']);
+		});
 	}
 }

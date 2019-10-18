@@ -18,10 +18,10 @@ import {
 	MatSelectModule,
 	MatSidenavModule,
 	MatSlideToggleModule,
+	MatSortModule,
 	MatTableModule,
 	MatToolbarModule,
-	MatTooltipModule,
-	MatSortModule
+	MatTooltipModule
 } from '@angular/material';
 
 @NgModule({

@@ -1,28 +1,27 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { ItemFormControlsComponent } from './item-form-controls.component';
 
 describe('ItemFormControlsComponent', () => {
-  let component: ItemFormControlsComponent;
-  let fixture: ComponentFixture<ItemFormControlsComponent>;
+	let component: ItemFormControlsComponent;
+	let fixture: ComponentFixture<ItemFormControlsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ItemFormControlsComponent ]
-    })
-    .compileComponents();
-  }));
+	beforeEach(
+		async(() => {
+			TestBed.configureTestingModule({
+				declarations: [ ItemFormControlsComponent ]
+			}).compileComponents();
+		})
+	);
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ItemFormControlsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ItemFormControlsComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

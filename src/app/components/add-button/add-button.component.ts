@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'lsa-add-button',
@@ -6,9 +6,9 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 	styleUrls: [ './add-button.component.scss' ]
 })
 export class AddButtonComponent implements OnInit {
+	@Output() public addClicked = new EventEmitter();
+
 	constructor() {}
 
-	@Output() addClicked = new EventEmitter();
-
-	ngOnInit() {}
+	public ngOnInit() {}
 }
