@@ -1,0 +1,14 @@
+<div [formGroup]="form">
+  <mat-form-field class="autocomplete">
+    <input type="text" matInput placeholder="{{this.placeholder}}" required [matAutocomplete]="matAutocomplete"
+      formControlName="{{this.searchField}}" #trigger="matAutocompleteTrigger">
+    <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let obj of filteredList" [value]="obj">
+        {{obj[this.lookupField]}}
+      </mat-option>
+    </mat-autocomplete>
+    <button mat-button *ngIf="showAddButton" mat-icon-button matSuffix (click)="add($event)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+</div>

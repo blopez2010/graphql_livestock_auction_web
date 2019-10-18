@@ -32,9 +32,14 @@
       <mat-card-header>Información del Comprador</mat-card-header>
       <mat-card-content>
         <div class="inline buyer">
-          <lsa-people-filter [people]="people" (addedPeople)="addPeople($event)"
-            (selectedPeopleChange)="selectedPeopleChange($event)">
-          </lsa-people-filter>
+          <lsa-auto-complete 
+            [list]="people" 
+            [searchField]="'fullName'"
+            [placeholder]="'Buscar Comprador'"
+            [showAddButton]="true"
+            (addClicked)="addPeople($event)" 
+            (selectedItemChange)="selectedPeopleChange($event)">
+          </lsa-auto-complete>
         </div>
         <div class="inline description">
           <mat-form-field>

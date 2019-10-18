@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { PeopleFilterComponent } from './people-filter.component';
+import { AutoCompleteComponent } from './auto-complete.component';
 
-describe('PeopleFilterComponent', () => {
-  let component: PeopleFilterComponent;
-  let fixture: ComponentFixture<PeopleFilterComponent>;
+describe('AutoCompleteComponent', () => {
+  let component: AutoCompleteComponent;
+  let fixture: ComponentFixture<AutoCompleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PeopleFilterComponent ]
+      declarations: [ AutoCompleteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PeopleFilterComponent);
+    fixture = TestBed.createComponent(AutoCompleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

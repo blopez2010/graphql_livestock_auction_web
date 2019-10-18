@@ -23,6 +23,8 @@ export class ItemComponent implements OnInit {
 	public isRateLimitReached = false;
 	public totalCount = 0;
 	public searchForm: FormGroup;
+	public events: Event[];
+	public activeEvent: string;
 
 	private people: Response[];
 	private selectedEventId: string;
@@ -95,6 +97,11 @@ export class ItemComponent implements OnInit {
 			eventId: ''
 		});
 		this.selectedEventId = this.route.data['value']['activeEvent'].id;
+		this.events = this.route.data['value']['events'];
+		const resolvedActiveEvent = this.route.data['value']['activeEvent'];
+		this.activeEvent = resolvedActiveEvent
+			? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
+			: '';
 		// this.showSpinner = true;
 		// this.loadData(this.route.data['value']['activeEvent']);
 	}
