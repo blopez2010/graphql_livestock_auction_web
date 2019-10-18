@@ -87,7 +87,6 @@ export class AuctionComponent implements OnInit {
 		this.getItemsCountDown();
 		this.getTotalCount();
 		this.auctionForm.get('transaction').get('totalCount').setValue(this.totalCount - this.countDown);
-		console.log(this.totalCount - this.countDown);
 	}
 
 	private getItemsCountDown() {
@@ -107,11 +106,6 @@ export class AuctionComponent implements OnInit {
 	ngOnInit() {
 		this.initForm();
 		this.people = this.route.data['value']['people'];
-		this.router.events
-			.pipe(filter((event: RouterEvent) => event instanceof NavigationEnd), takeUntil(this.destroyed))
-			.subscribe((value) => {
-				console.log(value);
-			});
 		this.getTotalBuying();
 		this.getTotalCount();
 	}
@@ -140,10 +134,6 @@ export class AuctionComponent implements OnInit {
 
 	public selectedPeopleChange(data: People) {
 		this.selectedBuyer = data;
-	}
-
-	public selectedEventChange(event: Event) {
-		console.log(event);
 	}
 
 	/**
