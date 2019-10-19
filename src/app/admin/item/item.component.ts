@@ -51,7 +51,8 @@ export class ItemComponent implements OnInit {
 
 	public ngOnInit() {
 		this.searchForm = this.formBuilder.group({
-			eventId: ''
+			eventId: '',
+			filter: ''
 		});
 		this.selectedEventId = this.route.data['value']['activeEvent'].id;
 		this.events = this.route.data['value']['events'];
@@ -64,13 +65,9 @@ export class ItemComponent implements OnInit {
 	// tslint:disable-next-line: use-life-cycle-interface
 	public ngAfterViewInit() {
 		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-		this.searchForm.get('eventId').valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
+		this.searchForm.valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
 
-		merge(
-			this.sort.sortChange,
-			this.paginator.page,
-			this.searchForm.get('eventId').valueChanges.pipe(debounceTime(300))
-		)
+		merge(this.sort.sortChange, this.paginator.page, this.searchForm.valueChanges.pipe(debounceTime(300)))
 			.pipe(
 				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<Item>),
 				switchMap(() => {
@@ -82,7 +79,7 @@ export class ItemComponent implements OnInit {
 
 					return this.itemsService.getByEventPaginated(
 						this.searchForm.get('eventId').value,
-						this.dataSource.filter,
+						this.searchForm.get('filter').value,
 						sortByColumn,
 						this.sort.direction.toUpperCase() || 'ASC',
 						this.paginator.pageIndex,

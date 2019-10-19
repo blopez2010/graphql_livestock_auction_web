@@ -1,4 +1,29 @@
-::ng-deep.autocomplete {
-	margin-right: 1em;
-	width: 40%;
+div {
+	&.filter-items {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-around;
+		align-items: stretch;
+		align-content: stretch;
+
+		lsa-auto-complete,
+		form {
+			width: 100%;
+		}
+
+		form {
+			padding-right: 1em;
+		}
+
+		::ng-deep.autocomplete {
+			width: 100%;
+			margin: 1em 10px 0 0;
+		}
+
+		.mat-form-field {
+			width: 100%;
+			margin: 1em 0 0 10px;
+		}
+	}
 }
