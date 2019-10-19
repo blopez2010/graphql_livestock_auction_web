@@ -74,10 +74,16 @@ export class ItemComponent implements OnInit {
 			.pipe(
 				startWith({ data: [], totalCount: 0, limit: 0, offset: 0, isLoading: false } as PaginatedResponse<Item>),
 				switchMap(() => {
+					let sortByColumn = 'ordinal';
+
+					if (this.sort.active && this.sort.active === 'ownerName') {
+						sortByColumn = 'people.name';
+					}
+
 					return this.itemsService.getByEventPaginated(
 						this.searchForm.get('eventId').value,
 						this.dataSource.filter,
-						this.sort.active || 'ordinal',
+						sortByColumn,
 						this.sort.direction.toUpperCase() || 'ASC',
 						this.paginator.pageIndex,
 						this.paginator.pageSize
