@@ -60,6 +60,8 @@ export class ItemComponent implements OnInit {
 		this.activeEvent = resolvedActiveEvent
 			? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
 			: '';
+
+		this.searchForm.get('eventId').setValue(this.activeEvent);
 	}
 
 	// tslint:disable-next-line: use-life-cycle-interface

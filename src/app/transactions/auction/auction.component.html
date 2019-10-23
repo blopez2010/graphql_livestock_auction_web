@@ -34,7 +34,9 @@
         <div class="inline buyer">
           <lsa-auto-complete 
             [list]="people" 
-            [searchField]="'fullName'"
+            [form]="auctionForm"
+            [field]="'ownerId'"
+            [lookupField]="'fullName'"
             [placeholder]="'Buscar Comprador'"
             [showAddButton]="true"
             (addClicked)="addPeople($event)" 

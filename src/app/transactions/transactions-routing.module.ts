@@ -16,7 +16,12 @@ const routes: Routes = [
 			{ path: '', pathMatch: 'full', redirectTo: 'list' },
 			{
 				path: 'list',
-				component: TransactionsComponent
+				component: TransactionsComponent,
+				resolve: {
+					activeEvent: ActiveEventResolver,
+					people: PeopleResolver,
+					events: EventsResolver
+				}
 			},
 			{
 				path: 'auction',

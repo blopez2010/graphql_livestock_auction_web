@@ -7,18 +7,12 @@ import { ActiveEventResolver } from '../shared/resolvers/active-event.resolver';
 import { SharedModule } from '../shared/shared.module';
 import { AuctionComponent } from './auction/auction.component';
 import { TransactionsRoutingModule } from './transactions-routing.module';
+import { FiltersComponent } from './transactions/filters/filters.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		CommonModule,
-		SharedModule,
-		ReactiveFormsModule,
-		TransactionsRoutingModule,
-		ComponentsModule
-	],
-	declarations: [ TransactionsComponent, AuctionComponent ],
+	imports: [ CommonModule, SharedModule, ReactiveFormsModule, TransactionsRoutingModule, ComponentsModule ],
+	declarations: [ TransactionsComponent, AuctionComponent, FiltersComponent ],
 	providers: [ ActiveEventResolver ]
 })
 export class TransactionsModule {}

@@ -1,0 +1,73 @@
+<div class="transactions-container">
+  <form [formGroup]="form" (submit)="search()" novalidate>
+    <div class="filter filter-transaction">
+      <lsa-auto-complete 
+        [list]="events" 
+        [(form)]="form"
+        [field]="'eventId'"
+        [placeholder]="'Eventos'" 
+        [lookupField]="'eventName'" 
+        [isRequired]="true"
+        (selectedItemChange)="selectedEventChange($event)">
+      </lsa-auto-complete>
+      <lsa-auto-complete 
+        [list]="buyers" 
+        [(form)]="form"
+        [field]="'buyerId'"
+        [placeholder]="'Comprador'" 
+        [lookupField]="'fullName'" 
+        (selectedItemChange)="selectedBuyerChange($event)">
+      </lsa-auto-complete>
+    </div>
+    <div class="filter filter-transaction">
+      <mat-form-field>
+        <input matInput placeholder="Monto inicial" type="number" class="align--right" formControlName="amountFrom" autocomplete="off">
+        <span matPrefix>¢&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Monto final" type="number" class="align--right" formControlName="amountTo" autocomplete="off">
+        <span matPrefix>¢&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    </div>
+    <div class="filter filter-transaction">
+      <mat-form-field class="margin--top">
+          <input matInput placeholder="Método de pago" formControlName="paymentMethod" autocomplete="off">
+      </mat-form-field>
+      <mat-form-field class="margin--top">
+          <input matInput placeholder="Referencia" formControlName="paymentReference" autocomplete="off">
+      </mat-form-field>
+    </div>
+    <div class="filter filter-transaction">
+      <mat-form-field>
+        <input matInput [matDatepicker]="paymentDateFrom" placeholder="Fecha de pago inicial" formControlName="paymentDateFrom" autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="paymentDateFrom"></mat-datepicker-toggle>
+        <mat-datepicker #paymentDateFrom disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepickerFilter]="toDateRangeFilter" [matDatepicker]="paymentDateTo" placeholder="Fecha de pago final" formControlName="paymentDateTo" autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="paymentDateTo"></mat-datepicker-toggle>
+        <mat-datepicker #paymentDateTo disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="filter filter-transaction toggle">
+      <mat-slide-toggle
+        [color]="'primary'" formControlName="isDonated">
+        Donados
+      </mat-slide-toggle>
+      <mat-slide-toggle
+        [color]="'primary'" formControlName="isPayed">
+        Pagados
+      </mat-slide-toggle>
+      <mat-slide-toggle
+        [color]="'primary'" formControlName="isLastBuyer">
+        Ultimo comprador
+      </mat-slide-toggle>
+    </div>
+    <div class="actions">
+      <button mat-raised-button [color]="'primary'" type="submit">Buscar</button>
+      <button mat-raised-button [color]="'basic'" (click)="reset()">Limpiar</button>
+    </div>
+  </form>
+</div>
