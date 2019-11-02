@@ -5,25 +5,25 @@ import { Loader } from '../../models';
 import { LoaderService } from '../../services/loader.service';
 
 @Component({
-	selector: 'lsa-loader',
-	templateUrl: './loader.component.html',
-	styleUrls: [ './loader.component.scss' ]
+  selector: 'lsa-loader',
+  templateUrl: './loader.component.html',
+  styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements OnInit {
-	public show = false;
+  public show = false;
 
-	private subscription: Subscription;
+  private subscription: Subscription;
 
-	constructor(private loaderService: LoaderService) {}
+  constructor(private loaderService: LoaderService) {}
 
-	public ngOnInit() {
-		this.subscription = this.loaderService.loaderState.subscribe((state: Loader) => {
-			this.show = state.show;
-		});
-	}
+  public ngOnInit() {
+    this.subscription = this.loaderService.loaderState.subscribe((state: Loader) => {
+      this.show = state.show;
+    });
+  }
 
-	// tslint:disable-next-line: use-life-cycle-interface
-	public ngOnDestroy() {
-		this.subscription.unsubscribe();
-	}
+  // tslint:disable-next-line: use-life-cycle-interface
+  public ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

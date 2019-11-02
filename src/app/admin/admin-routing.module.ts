@@ -9,34 +9,34 @@ import { ItemComponent } from './item/item.component';
 import { PeopleComponent } from './people/people.component';
 
 const routes: Routes = [
-	{
-		path: '',
-		component: AdminComponent,
-		children: [
-			{
-				path: '',
-				redirectTo: 'people',
-				pathMatch: 'full'
-			},
-			{
-				path: 'people',
-				component: PeopleComponent
-			},
-			{
-				path: 'items',
-				component: ItemComponent,
-				resolve: {
-					people: PeopleResolver,
-					events: EventsResolver,
-					activeEvent: ActiveEventResolver
-				}
-			}
-		]
-	}
+  {
+    path: '',
+    component: AdminComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'people',
+        pathMatch: 'full'
+      },
+      {
+        path: 'people',
+        component: PeopleComponent
+      },
+      {
+        path: 'items',
+        component: ItemComponent,
+        resolve: {
+          people: PeopleResolver,
+          events: EventsResolver,
+          activeEvent: ActiveEventResolver
+        }
+      }
+    ]
+  }
 ];
 
 @NgModule({
-	imports: [ RouterModule.forChild(routes) ],
-	exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class AdminRoutingModule {}

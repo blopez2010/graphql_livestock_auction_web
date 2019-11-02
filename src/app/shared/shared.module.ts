@@ -15,15 +15,22 @@ import { PeopleResolver } from './resolvers/people.resolver';
 import { TokenStorageService } from './token-storage.service';
 
 @NgModule({
-	imports: [ MaterialModule, ReactiveFormsModule, RouterModule, CommonModule, ApolloModule, ComponentsModule ],
-	declarations: [ MenuComponent ],
-	providers: [
-		TokenStorageService,
-		ActiveEventResolver,
-		PeopleResolver,
-		EventsResolver,
-		{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
-	],
-	exports: [ MaterialModule, ApolloModule, MenuComponent ]
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CommonModule,
+    ApolloModule,
+    ComponentsModule
+  ],
+  declarations: [MenuComponent],
+  providers: [
+    TokenStorageService,
+    ActiveEventResolver,
+    PeopleResolver,
+    EventsResolver,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+  ],
+  exports: [MaterialModule, ApolloModule, MenuComponent]
 })
 export class SharedModule {}

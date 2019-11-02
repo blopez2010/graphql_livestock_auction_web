@@ -1,0 +1,45 @@
+<h3 mat-dialog-title>Registrar Pago</h3>
+<form [formGroup]="payForm" (submit)="pay()" novalidate>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Método de pago:</mat-label>
+      <select matNativeControl required formControlName="paymentMethod">
+        <option value="CASH">Efectivo</option>
+        <option value="DEPOSIT">Depósito</option>
+        <option value="MONEY_CHECK">Cheque</option>
+      </select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Número de referencia:"
+        formControlName="paymentReference"
+        autocomplete="off"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        [matDatepickerFilter]="toDateRangeFilter"
+        [matDatepicker]="paymentDate"
+        placeholder="Fecha de pago:"
+        autocomplete="off"
+        required
+        readonly
+        formControlName="paymentDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
+      <mat-datepicker #paymentDate disabled="false"></mat-datepicker>
+      <mat-error *ngIf="payForm.get('paymentDate').hasError('required')">
+        La fecha de pago es requerida
+      </mat-error>
+      <mat-error *ngIf="payForm.get('paymentDate').hasError('matDatepickerFilter')">
+        La fecha de pago es inválida
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-button color="primary" type="submit">Guardar</button>
+  </mat-dialog-actions>
+</form>

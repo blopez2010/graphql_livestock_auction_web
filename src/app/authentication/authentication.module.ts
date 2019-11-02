@@ -11,16 +11,16 @@ import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { LoginComponent } from './login/login.component';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		AuthenticationRoutingModule,
-		SharedModule,
-		HttpClientModule,
-		ApolloModule,
-		HttpLinkModule,
-		GraphQLModule,
-		ReactiveFormsModule
-	],
-	declarations: [ LoginComponent ]
+  imports: [
+    CommonModule,
+    AuthenticationRoutingModule,
+    SharedModule,
+    HttpClientModule,
+    ApolloModule,
+    HttpLinkModule,
+    GraphQLModule,
+    ReactiveFormsModule
+  ],
+  declarations: [LoginComponent]
 })
 export class AuthenticationModule {}
