@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,7 +29,8 @@ import { SessionService } from './shared/session.service';
 		ToastrModule.forRoot({
 			positionClass: 'toast-top-center',
 			preventDuplicates: true
-		})
+		}),
+		NgxMaskModule.forRoot()
 	],
 	providers: [
 		SessionService,

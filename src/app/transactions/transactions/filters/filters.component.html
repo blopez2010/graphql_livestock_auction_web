@@ -4,7 +4,7 @@
       <lsa-auto-complete 
         [list]="events" 
         [(form)]="form"
-        [field]="'eventId'"
+        [field]="'event'"
         [placeholder]="'Eventos'" 
         [lookupField]="'eventName'" 
         [isRequired]="true"
@@ -21,14 +21,20 @@
     </div>
     <div class="filter filter-transaction">
       <mat-form-field>
-        <input matInput placeholder="Monto inicial" type="number" class="align--right" formControlName="amountFrom" autocomplete="off">
+        <input matInput placeholder="Monto inicial" class="align--right" mask="separator" thousandSeparator="." formControlName="amountFrom" autocomplete="off">
         <span matPrefix>¢&nbsp;</span>
-        <span matSuffix>.00</span>
+        <span matSuffix>,00</span>
+        <mat-error [hidden]="form.get('amountFrom').hasError('valid')">
+          El monto inicial no puede ser mayor que el monto final
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Monto final" type="number" class="align--right" formControlName="amountTo" autocomplete="off">
+        <input matInput placeholder="Monto final" class="align--right" mask="separator" thousandSeparator="." formControlName="amountTo" autocomplete="off">
         <span matPrefix>¢&nbsp;</span>
-        <span matSuffix>.00</span>
+        <span matSuffix>,00</span>
+        <mat-error [hidden]="form.get('amountTo').hasError('valid')">
+          El monto final no puede ser menor que el monto inicial
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="filter filter-transaction">

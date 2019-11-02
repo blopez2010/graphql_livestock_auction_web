@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,9 +16,9 @@ export class FiltersComponent implements OnInit {
 	public buyers: People[];
 	public activeEvent: string;
 
-	@Output() public searchClicked = new EventEmitter();
+	@Output() public searchClicked = new EventEmitter<any>();
 
-	constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) {}
+	constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {}
 
 	public ngOnInit(): void {
 		this.initForm();
@@ -31,19 +31,34 @@ export class FiltersComponent implements OnInit {
 			? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
 			: '';
 
-		this.form.get('eventId').setValue(this.activeEvent);
+		this.form.get('event').setValue(this.activeEvent);
+	}
+
+	// tslint:disable-next-line: use-life-cycle-interface
+	public ngAfterViewInit() {
+		this.cd.detectChanges();
 	}
 
 	//#region Public methods
 
 	public search() {
 		if (this.form.valid) {
-			this.searchClicked.emit();
+			const values = Object.entries(this.form.value)
+				.filter(([ k, v ]) => v !== undefined && v !== null && ![ 'event', 'buyer' ].includes(k))
+				.reduce((acc, [ k, v ]) => {
+					if ([ 'amountFrom', 'amountTo' ].includes(k as string)) {
+						return { ...acc, [k]: Number.parseFloat(v as string) };
+					}
+
+					return { ...acc, [k]: v };
+				}, {});
+			this.searchClicked.emit(values);
 		}
 	}
 
 	public reset() {
 		this.form.reset();
+		this.form.get('eventId').markAsDirty();
 	}
 
 	public toDateRangeFilter = (date: Date): boolean => {
@@ -55,8 +70,10 @@ export class FiltersComponent implements OnInit {
 		return false;
 	};
 
-	public selectedEventChange(event) {}
-	public selectedBuyerChange(event) {}
+	public selectedEventChange(eventId: string) {
+		this.form.get('eventId').setValue(eventId);
+	}
+	public selectedBuyerChange() {}
 
 	//#endregion
 
@@ -65,6 +82,7 @@ export class FiltersComponent implements OnInit {
 	private initForm() {
 		this.form = this.formBuilder.group({
 			eventId: [ undefined, Validators.required ],
+			event: undefined,
 			buyerId: undefined,
 			amountFrom: [ undefined, ValidateAmountRange ],
 			amountTo: [ undefined, ValidateAmountRange ],

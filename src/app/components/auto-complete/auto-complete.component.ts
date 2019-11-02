@@ -1,8 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material';
+import { FormControl, FormGroup, FormGroupDirective, NgForm } from '@angular/forms';
+import { ErrorStateMatcher, MatAutocomplete, MatAutocompleteTrigger } from '@angular/material';
+import { guidRegex } from 'src/app/shared/constants';
 
 import { HelpersService } from '../../shared/helpers.service';
+
+class CustomErrorStateMatcher implements ErrorStateMatcher {
+	constructor(private isRequired: boolean) {}
+
+	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		const controlTouched = !!(control && (control.dirty || control.touched));
+		const controlInvalid = !!(control && control.invalid);
+		// const isFormInvalid = form.dirty && form.invalid;
+
+		return (this.isRequired && (controlTouched && controlInvalid)) || (this.isRequired && controlInvalid);
+	}
+}
 
 @Component({
 	selector: 'lsa-auto-complete',
@@ -11,6 +24,7 @@ import { HelpersService } from '../../shared/helpers.service';
 })
 export class AutoCompleteComponent implements OnInit {
 	public filteredList: any[];
+	public customErrorStateMatcher: CustomErrorStateMatcher;
 
 	@Input() public form: FormGroup;
 	@Input() public list: any[] = [];
@@ -31,6 +45,8 @@ export class AutoCompleteComponent implements OnInit {
 	constructor(private helpersService: HelpersService) {}
 
 	public ngOnInit() {
+		this.customErrorStateMatcher = new CustomErrorStateMatcher(this.isRequired);
+
 		this.form.get(this.field).valueChanges.subscribe((lookupObj) => {
 			if (typeof lookupObj === 'string') {
 				if (lookupObj) {
@@ -40,7 +56,7 @@ export class AutoCompleteComponent implements OnInit {
 				}
 			}
 
-			if (typeof lookupObj === 'object') {
+			if (typeof lookupObj === 'string' && guidRegex.test(lookupObj)) {
 				this.selectedItemChange.emit(lookupObj);
 			}
 		});

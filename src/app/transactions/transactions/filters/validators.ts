@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 export function ValidateAmountRange(control: AbstractControl) {
 	if (control.parent && control.parent.get('amountFrom').value && control.parent.get('amountTo').value) {
-		if (control.parent.get('amountFrom').value > control.parent.get('amountTo').value) {
+		if (!(control.parent.get('amountTo').value > control.parent.get('amountFrom').value)) {
 			return {
 				valid: false
 			};

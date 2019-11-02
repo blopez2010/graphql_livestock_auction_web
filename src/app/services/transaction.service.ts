@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { createTransaction } from '../graphql/types-definitions';
-import { getTotalAmountByEvent } from '../graphql/types-definitions/transactions/queries';
+import { getTotalAmountByEvent, getTransactionsPaginated } from '../graphql/types-definitions/transactions/queries';
 
 @Injectable({
 	providedIn: 'root'
@@ -61,6 +61,39 @@ export class TransactionService {
 				map((result) => {
 					return { data: result.data['getTotalsByEvent'] };
 				})
+			);
+	}
+
+	/**
+	 * getPaginated
+	 */
+	public getPaginated(filters: any, sortColumn: string, sortDirection: string, offset: number, limit: number) {
+		const newFilters = {
+			...filters
+		};
+
+		Object.keys(newFilters).forEach((key) => (!newFilters[key] ? (newFilters[key] = undefined) : newFilters[key]));
+		return this.apollo
+			.query({
+				query: getTransactionsPaginated,
+				variables: {
+					input: {
+						filters: newFilters,
+						sortColumn,
+						sortDirection,
+						offset,
+						limit
+					}
+				}
+			})
+			.pipe(
+				map((result) => ({
+					data: result.data['allTransactionsPaginated']['transactions'],
+					totalCount: result.data['allTransactionsPaginated'].totalCount,
+					limit: result.data['allTransactionsPaginated'].limit,
+					offset: result.data['allTransactionsPaginated'].offset,
+					isLoading: result.loading
+				}))
 			);
 	}
 }
