@@ -52,6 +52,7 @@ export class ItemComponent implements OnInit {
 	public ngOnInit() {
 		this.searchForm = this.formBuilder.group({
 			eventId: '',
+			event: '',
 			filter: ''
 		});
 		this.selectedEventId = this.route.data['value']['activeEvent'].id;
@@ -60,6 +61,8 @@ export class ItemComponent implements OnInit {
 		this.activeEvent = resolvedActiveEvent
 			? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
 			: '';
+
+		this.searchForm.get('event').setValue(this.activeEvent);
 	}
 
 	// tslint:disable-next-line: use-life-cycle-interface
@@ -144,7 +147,7 @@ export class ItemComponent implements OnInit {
 	}
 
 	public selectedEventChange(event: any) {
-		this.searchForm.get('eventId').setValue(event.id);
+		this.searchForm.get('eventId').setValue(event);
 	}
 
 	public searchEventChange(text: string) {

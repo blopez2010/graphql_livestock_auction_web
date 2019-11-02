@@ -1,0 +1,55 @@
+.transactions-container {
+	padding: 0 1em 1em 1em;
+
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+
+		button {
+			&.mat-basic {
+				margin-left: 10px;
+			}
+		}
+	}
+
+	div {
+		&.filter-transaction {
+			lsa-auto-complete {
+				margin-left: 10px;
+				width: 100%;
+			}
+
+			form {
+				padding-right: 1em;
+			}
+
+			::ng-deep.autocomplete {
+				width: 100%;
+				margin: 1em 10px 0 0;
+			}
+
+			.mat-form-field {
+				width: 100%;
+				margin: 0 0 0 10px;
+			}
+
+			&.toggle {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				justify-content: flex-start;
+				align-items: stretch;
+				align-content: stretch;
+
+				mat-slide-toggle {
+					margin-right: 0.5em;
+				}
+			}
+
+			input.align--right::-webkit-outer-spin-button,
+			input.align--right::-webkit-inner-spin-button {
+				display: none;
+			}
+		}
+	}
+}

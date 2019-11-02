@@ -1,12 +1,5 @@
 div {
 	&.filter-items {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		justify-content: space-around;
-		align-items: stretch;
-		align-content: stretch;
-
 		lsa-auto-complete,
 		form {
 			width: 100%;

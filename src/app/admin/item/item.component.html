@@ -1,15 +1,16 @@
 <div class="container">
-  <div class="filter-items">
+  <div class="filter filter-items">
     <lsa-auto-complete 
+      [form]="searchForm"
       [list]="events" 
-      [searchField]="'name'" 
-      [defaultValue]="activeEvent" 
       [placeholder]="'Eventos'" 
+      [field]="'event'"
       [lookupField]="'eventName'" 
+      [isRequired]="true"
       (selectedItemChange)="selectedEventChange($event)">
     </lsa-auto-complete>
     <form [formGroup]="searchForm" novalidate>
-      <mat-form-field class="margin--top filter">
+      <mat-form-field class="margin--top">
         <input matInput placeholder="Filtrar" formControlName="filter">
       </mat-form-field>
     </form>
