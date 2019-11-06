@@ -5,16 +5,13 @@ import { inject, TestBed } from '@angular/core/testing';
 import { HelpersService } from './helpers.service';
 
 describe('Service: Helpers', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			providers: [ HelpersService ]
-		});
-	});
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [HelpersService]
+    });
+  });
 
-	it(
-		'should ...',
-		inject([ HelpersService ], (service: HelpersService) => {
-			expect(service).toBeTruthy();
-		})
-	);
+  it('should ...', inject([HelpersService], (service: HelpersService) => {
+    expect(service).toBeTruthy();
+  }));
 });

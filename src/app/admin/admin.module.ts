@@ -11,8 +11,8 @@ import { ItemComponent } from './item/item.component';
 import { PeopleComponent } from './people/people.component';
 
 @NgModule({
-	imports: [ CommonModule, SharedModule, ReactiveFormsModule, AdminRoutingModule, ComponentsModule ],
-	entryComponents: [ ItemComponent, ItemFormComponent ],
-	declarations: [ AdminComponent, PeopleComponent, ItemComponent, ItemFormComponent ]
+  imports: [CommonModule, SharedModule, ReactiveFormsModule, AdminRoutingModule, ComponentsModule],
+  entryComponents: [ItemComponent, ItemFormComponent],
+  declarations: [AdminComponent, PeopleComponent, ItemComponent, ItemFormComponent]
 })
 export class AdminModule {}

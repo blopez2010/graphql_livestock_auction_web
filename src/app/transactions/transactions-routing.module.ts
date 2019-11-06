@@ -9,36 +9,36 @@ import { AuctionComponent } from './auction/auction.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 
 const routes: Routes = [
-	{
-		path: '',
-		component: MenuComponent,
-		children: [
-			{ path: '', pathMatch: 'full', redirectTo: 'list' },
-			{
-				path: 'list',
-				component: TransactionsComponent,
-				resolve: {
-					activeEvent: ActiveEventResolver,
-					people: PeopleResolver,
-					events: EventsResolver
-				}
-			},
-			{
-				path: 'auction',
-				component: AuctionComponent,
-				resolve: {
-					activeEvent: ActiveEventResolver,
-					people: PeopleResolver,
-					events: EventsResolver
-				},
-				runGuardsAndResolvers: 'always'
-			}
-		]
-	}
+  {
+    path: '',
+    component: MenuComponent,
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'list' },
+      {
+        path: 'list',
+        component: TransactionsComponent,
+        resolve: {
+          activeEvent: ActiveEventResolver,
+          people: PeopleResolver,
+          events: EventsResolver
+        }
+      },
+      {
+        path: 'auction',
+        component: AuctionComponent,
+        resolve: {
+          activeEvent: ActiveEventResolver,
+          people: PeopleResolver,
+          events: EventsResolver
+        },
+        runGuardsAndResolvers: 'always'
+      }
+    ]
+  }
 ];
 
 @NgModule({
-	imports: [ RouterModule.forChild(routes) ],
-	exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class TransactionsRoutingModule {}

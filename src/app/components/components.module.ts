@@ -11,30 +11,30 @@ import { PeopleFormControlsComponent } from './people-form-controls/people-form-
 import { PeopleFormComponent } from './people-form/people-form.component';
 
 @NgModule({
-	imports: [ CommonModule, ReactiveFormsModule, MaterialModule ],
-	entryComponents: [
-		ItemFormControlsComponent,
-		PeopleFormControlsComponent,
-		PeopleFormComponent,
-		AutoCompleteComponent,
-		AddButtonComponent,
-		LoaderComponent
-	],
-	declarations: [
-		ItemFormControlsComponent,
-		PeopleFormControlsComponent,
-		PeopleFormComponent,
-		AutoCompleteComponent,
-		AddButtonComponent,
-		LoaderComponent
-	],
-	exports: [
-		ItemFormControlsComponent,
-		PeopleFormControlsComponent,
-		PeopleFormComponent,
-		AutoCompleteComponent,
-		AddButtonComponent,
-		LoaderComponent
-	]
+  imports: [CommonModule, ReactiveFormsModule, MaterialModule],
+  entryComponents: [
+    ItemFormControlsComponent,
+    PeopleFormControlsComponent,
+    PeopleFormComponent,
+    AutoCompleteComponent,
+    AddButtonComponent,
+    LoaderComponent
+  ],
+  declarations: [
+    ItemFormControlsComponent,
+    PeopleFormControlsComponent,
+    PeopleFormComponent,
+    AutoCompleteComponent,
+    AddButtonComponent,
+    LoaderComponent
+  ],
+  exports: [
+    ItemFormControlsComponent,
+    PeopleFormControlsComponent,
+    PeopleFormComponent,
+    AutoCompleteComponent,
+    AddButtonComponent,
+    LoaderComponent
+  ]
 })
 export class ComponentsModule {}

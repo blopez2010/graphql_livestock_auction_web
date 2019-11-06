@@ -17,30 +17,30 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SessionService } from './shared/session.service';
 
 @NgModule({
-	declarations: [ AppComponent, HeaderComponent, FooterComponent ],
-	imports: [
-		BrowserModule,
-		BrowserAnimationsModule,
-		MaterialModule,
-		AuthenticationModule,
-		AppRoutingModule,
-		HttpClientModule,
-		ReactiveFormsModule,
-		ToastrModule.forRoot({
-			positionClass: 'toast-top-center',
-			preventDuplicates: true
-		}),
-		NgxMaskModule.forRoot()
-	],
-	providers: [
-		SessionService,
-		SessionGuard,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: TokenInterceptor,
-			multi: true
-		}
-	],
-	bootstrap: [ AppComponent ]
+  declarations: [AppComponent, HeaderComponent, FooterComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    AuthenticationModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      preventDuplicates: true
+    }),
+    NgxMaskModule.forRoot()
+  ],
+  providers: [
+    SessionService,
+    SessionGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
