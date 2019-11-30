@@ -5,6 +5,7 @@ import { ActiveEventResolver } from '../shared/resolvers/active-event.resolver';
 import { EventsResolver } from '../shared/resolvers/events.resolver';
 import { PeopleResolver } from '../shared/resolvers/people.resolver';
 import { AdminComponent } from './admin/admin.component';
+import { EventComponent } from './event/event.component';
 import { ItemComponent } from './item/item.component';
 import { PeopleComponent } from './people/people.component';
 
@@ -30,6 +31,10 @@ const routes: Routes = [
           events: EventsResolver,
           activeEvent: ActiveEventResolver
         }
+      },
+      {
+        path: 'events',
+        component: EventComponent
       }
     ]
   }

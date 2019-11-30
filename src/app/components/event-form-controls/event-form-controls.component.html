@@ -1,0 +1,27 @@
+<div [formGroup]="form">
+  <mat-form-field>
+    <input matInput cdkFocusInitial placeholder="Nombre" formControlName="name" required />
+    <mat-error *ngIf="form.get('name').hasError('required')">
+      El nombre es requerido.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Descripción" formControlName="description" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="eventDateFrom" placeholder="Fecha de Inicio" formControlName="startDate" autocomplete="off" required>
+    <mat-datepicker-toggle matSuffix [for]="eventDateFrom"></mat-datepicker-toggle>
+    <mat-datepicker #eventDateFrom disabled="false"></mat-datepicker>
+    <mat-error *ngIf="form.get('startDate').hasError('required')">
+      La fecha de inicio es requerida.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="eventDateTo" placeholder="Fecha de Finalización" formControlName="endDate" autocomplete="off" required>
+    <mat-datepicker-toggle matSuffix [for]="eventDateTo"></mat-datepicker-toggle>
+    <mat-datepicker #eventDateTo disabled="false"></mat-datepicker>
+    <mat-error *ngIf="form.get('endDate').hasError('required')">
+      La fecha de finalización es requerida.
+    </mat-error>
+  </mat-form-field>
+</div>
