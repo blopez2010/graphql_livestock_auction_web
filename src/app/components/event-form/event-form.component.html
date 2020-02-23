@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>Agregar Evento</h3>
+<form [formGroup]="eventForm" (submit)="addEvent()" novalidate>
+  <mat-dialog-content>
+    <lsa-event-form-controls [form]="eventForm"></lsa-event-form-controls>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-button color='primary' type="submit">Guardar</button>
+  </mat-dialog-actions>
+</form>

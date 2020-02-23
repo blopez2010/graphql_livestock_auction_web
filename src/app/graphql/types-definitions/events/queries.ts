@@ -6,6 +6,8 @@ export const allEvents = gql`
       id
       name
       description
+      startDate
+      endDate
       createdAt
     }
   }

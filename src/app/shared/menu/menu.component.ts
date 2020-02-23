@@ -15,6 +15,11 @@ export class MenuComponent {
       icon: 'dashboard'
     },
     {
+      name: 'Eventos',
+      route: '/admin/events',
+      icon: 'event'
+    },
+    {
       name: 'Personas',
       route: '/admin/people',
       icon: 'people'
