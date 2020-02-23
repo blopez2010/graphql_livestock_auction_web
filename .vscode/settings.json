@@ -1,5 +1,4 @@
 {
-  "editor.formatOnSave": true,
   "javascript.implicitProjectConfig.experimentalDecorators": true,
   "workbench.colorCustomizations": {},
   "editor.tabSize": 2

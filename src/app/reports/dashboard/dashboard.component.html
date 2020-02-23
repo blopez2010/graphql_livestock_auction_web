@@ -1,0 +1,13 @@
+<div class="container">
+  <mat-form-field>
+    <mat-label>Seleccione un Reporte</mat-label>
+    <mat-select [(value)]="selectedReport">
+      <mat-option>Ninguno</mat-option>
+      <mat-option value="BUYERS">Compradores</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div [ngSwitch]="selectedReport">
+    <lsa-buyers-report *ngSwitchCase="'BUYERS'"></lsa-buyers-report>
+    <div *ngSwitchDefault></div>
+  </div>
+</div>
