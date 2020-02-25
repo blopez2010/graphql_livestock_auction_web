@@ -45,3 +45,30 @@ export const getTransactionsPaginatedById = gql`
     }
   }
 `;
+
+export const getTransactionsBuyersReport = gql`
+	query getTransactionsBuyersReport($eventId:String!) {
+		getTransactionsBuyersReport(eventId:$eventId) {
+			id
+			eventId
+			eventName
+			eventDate
+			itemOrdinal
+			ownerId
+			ownerName
+			ownerNickname
+			buyerId
+			buyerName
+			buyerNickname
+			description
+			amount
+			isDonated
+			isPayed
+			isLastBuyer
+			paymentMethod
+			paymentReference
+			paymentDate
+			transactionCreatedAt
+		}
+	}
+`

@@ -3,3 +3,7 @@ export enum PaymentMethods {
   CASH = 'CASH',
   MONEY_CASH = 'MONEY_CASH'
 }
+
+export enum Reports {
+  BUYERS = 'BUYERS'
+}
