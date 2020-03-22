@@ -72,3 +72,17 @@ export const getTransactionsBuyersReport = gql`
 		}
 	}
 `
+
+export const getDonorsReport = gql`
+	query getDonorsReport($eventId:String!) {
+    getDonorsReport(eventId:$eventId){
+      id
+      itemOrdinal
+      itemDescription
+      ownerName
+      ownerNickname
+      ownerPhoneNumber
+      ownerAddress
+    }
+  }
+`
