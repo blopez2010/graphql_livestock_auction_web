@@ -4,15 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { DataReportService } from 'src/app/services/data-report.service';
 import { ReportsService } from 'src/app/services/reports.service';
 
-import { Event } from '../../../models';
 import { FormatReportService } from '../format-report.service';
 
 @Component({
-  selector: 'lsa-buyers-report',
-  templateUrl: './buyers.component.html',
-  styleUrls: ['./buyers.component.scss']
+  selector: 'lsa-debtors-report',
+  templateUrl: './debtors.component.html',
+  styleUrls: ['./debtors.component.scss']
 })
-export class BuyersComponent implements OnInit {
+export class DebtorsComponent implements OnInit {
   public global: WebDataRocks.Report;
   public searchForm: FormGroup;
   public events: Event[];
@@ -143,7 +142,7 @@ export class BuyersComponent implements OnInit {
    * selectedEventChange
    */
   public selectedEventChange(eventId) {
-    this.reportService.getBuyersReport(eventId).subscribe((result) => {
+    this.reportService.getDebtorsReport(eventId).subscribe((result) => {
       this.dataReportService.updateData({
         ...this.reportSchema,
         dataSource: this.formatReportService.formatData(result)

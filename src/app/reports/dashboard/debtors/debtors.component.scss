@@ -1,0 +1,16 @@
+div {
+  &.filter-items {
+		lsa-auto-complete,
+		form {
+			width: 100%;
+		}
+    
+    .filter {
+      justify-content: left;
+    }
+    
+    ::ng-deep.mat-form-field {
+      width: 50%;
+    }
+  }
+}
