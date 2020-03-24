@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { WebDataRocksPivot } from '../webdatarocks/webdatarocks.angular4';
 import { BuyersComponent } from './dashboard/buyers/buyers.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DonorsComponent } from './dashboard/donors/donors.component';
 import { ReportsRoutingModule } from './reports-routing.module';
 
 @NgModule({
@@ -18,7 +19,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
     ReportsRoutingModule,
     ComponentsModule
   ],
-  declarations: [DashboardComponent, WebDataRocksPivot, BuyersComponent],
+  declarations: [DashboardComponent, WebDataRocksPivot, BuyersComponent, DonorsComponent],
   providers: [ActiveEventResolver]
 })
 export class ReportsModule { }
