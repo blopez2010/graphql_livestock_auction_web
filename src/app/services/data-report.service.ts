@@ -6,16 +6,16 @@ import { Subject } from 'rxjs';
 })
 export class DataReportService {
   private updateSubject = new Subject<any>();
-  
+
   constructor() { }
-  
-	// tslint:disable-next-line: member-ordering
+
+  // tslint:disable-next-line: member-ordering
   public updateState = this.updateSubject.asObservable();
-  
+
   /**
    * updateData
    */
-  public updateData(data: any) {
-    this.updateSubject.next(data);
+  public updateData(data: any, options: any = null) {
+    this.updateSubject.next({ data, options });
   }
 }

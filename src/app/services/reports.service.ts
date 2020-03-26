@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { getTransactionsBuyersReport, getTransactionsDebtorsReport } from '../graphql/types-definitions/transactions/queries';
+import { getDonorsReport, getTransactionsBuyersReport, getTransactionsDebtorsReport } from '../graphql/types-definitions/transactions/queries';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +48,17 @@ export class ReportsService {
       );
   }
 
+  public getDonorsReport(eventId: string): Observable<any> {
+    return this.apollo.query({
+      query: getDonorsReport,
+      variables: {
+        eventId
+      }
+    })
+      .pipe(
+        map((result) => ({
+          data: result['data']['getDonorsReport']
+        }))
+      );
+  }
 }

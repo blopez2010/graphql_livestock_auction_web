@@ -98,4 +98,18 @@ export const getTransactionsDebtorsReport = gql`
 			transactionCreatedAt
 		}
 	}
-`
+`;
+	
+export const getDonorsReport = gql`
+	query getDonorsReport($eventId:String!) {
+    getDonorsReport(eventId:$eventId){
+      id
+      itemOrdinal
+      itemDescription
+      ownerName
+      ownerNickname
+      ownerPhoneNumber
+      ownerAddress
+    }
+  }
+`;
