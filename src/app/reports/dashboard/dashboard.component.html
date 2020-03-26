@@ -4,11 +4,13 @@
     <mat-select [(value)]="selectedReport">
       <mat-option>Ninguno</mat-option>
       <mat-option value="BUYERS">Compradores</mat-option>
+      <mat-option value="DEBTORS">Deudores</mat-option>
       <mat-option value="DONORS">Donadores</mat-option>
     </mat-select>
   </mat-form-field>
   <div [ngSwitch]="selectedReport">
     <lsa-buyers-report *ngSwitchCase="'BUYERS'"></lsa-buyers-report>
+    <lsa-debtors-report *ngSwitchCase="'DEBTORS'"></lsa-debtors-report>
     <lsa-donors-report *ngSwitchCase="'DONORS'"></lsa-donors-report>
     <div *ngSwitchDefault></div>
   </div>

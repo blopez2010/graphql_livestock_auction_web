@@ -73,6 +73,33 @@ export const getTransactionsBuyersReport = gql`
 	}
 `
 
+export const getTransactionsDebtorsReport = gql`
+	query getTransactionsDebtorsReport($eventId:String!) {
+		getTransactionsDebtorsReport(eventId:$eventId) {
+			id
+			eventId
+			eventName
+			eventDate
+			itemOrdinal
+			ownerId
+			ownerName
+			ownerNickname
+			buyerId
+			buyerName
+			buyerNickname
+			description
+			amount
+			isDonated
+			isPayed
+			isLastBuyer
+			paymentMethod
+			paymentReference
+			paymentDate
+			transactionCreatedAt
+		}
+	}
+`;
+	
 export const getDonorsReport = gql`
 	query getDonorsReport($eventId:String!) {
     getDonorsReport(eventId:$eventId){
@@ -85,4 +112,4 @@ export const getDonorsReport = gql`
       ownerAddress
     }
   }
-`
+`;
