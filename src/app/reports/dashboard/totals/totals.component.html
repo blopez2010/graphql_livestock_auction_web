@@ -1,0 +1,26 @@
+<div class="filter filter-transaction">
+  <form [formGroup]="form" (submit)="search()" novalidate>
+    <mat-form-field>
+      <input matInput [matDatepicker]="createdDateFrom" placeholder="Fecha de pago inicial" formControlName="createdDateFrom" autocomplete="off">
+      <mat-datepicker-toggle matSuffix [for]="createdDateFrom"></mat-datepicker-toggle>
+      <mat-datepicker #createdDateFrom disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepickerFilter]="toDateRangeFilter" [matDatepicker]="createdDateTo" placeholder="Fecha de pago final" formControlName="createdDateTo" autocomplete="off">
+      <mat-datepicker-toggle matSuffix [for]="createdDateTo"></mat-datepicker-toggle>
+      <mat-datepicker #createdDateTo disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <div class="actions">
+      <button mat-raised-button [color]="'basic'" (click)="reset()">Limpiar</button>
+      <button mat-raised-button [color]="'primary'" type="submit">Buscar</button>
+    </div>
+  </form>
+</div>
+<wbr-pivot #pivot1 [toolbar]="true"
+          [width]="'100%'"
+          [height]="500"
+          [global]="global"
+          (beforetoolbarcreated)="customizeToolbar($event)"
+  >
+    Cargando el Reporte
+</wbr-pivot>

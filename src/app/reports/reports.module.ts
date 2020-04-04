@@ -10,6 +10,7 @@ import { BuyersComponent } from './dashboard/buyers/buyers.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DebtorsComponent } from './dashboard/debtors/debtors.component';
 import { DonorsComponent } from './dashboard/donors/donors.component';
+import { TotalsComponent } from './dashboard/totals/totals.component';
 import { ReportsRoutingModule } from './reports-routing.module';
 
 @NgModule({
@@ -20,7 +21,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
     ReportsRoutingModule,
     ComponentsModule
   ],
-  declarations: [DashboardComponent, WebDataRocksPivot, BuyersComponent, DebtorsComponent, DonorsComponent],
+  declarations: [DashboardComponent, WebDataRocksPivot, BuyersComponent, DebtorsComponent, DonorsComponent, TotalsComponent],
   providers: [ActiveEventResolver]
 })
 export class ReportsModule { }

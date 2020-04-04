@@ -113,3 +113,13 @@ export const getDonorsReport = gql`
     }
   }
 `;
+
+export const getTransactionsTotalsReport = gql`
+	query getTransactionsTotalsReport($startDate: Date!, $endDate: Date!) {
+		getTransactionsTotalsReport(startDate:$startDate, endDate:$endDate){
+			eventDate
+			description
+			total
+		}
+	}
+`;

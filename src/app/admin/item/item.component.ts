@@ -63,6 +63,7 @@ export class ItemComponent implements OnInit {
     });
     this.selectedEventId = this.route.data['value']['activeEvent'].id;
     this.events = this.route.data['value']['events'];
+    this.people = this.route.data['value']['people'];
     const resolvedActiveEvent = this.route.data['value']['activeEvent'];
     this.activeEvent = resolvedActiveEvent
       ? `${resolvedActiveEvent.name} - ${new Date(resolvedActiveEvent.createdAt).getFullYear()}`
