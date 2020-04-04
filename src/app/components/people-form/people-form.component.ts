@@ -42,7 +42,7 @@ export class PeopleFormComponent implements OnInit {
       phoneNumber: '',
       externalIdentifier: '',
       address: ['', Validators.required],
-      isBanned: false,
+      isBanned: true,
       bannedDescription: [{ value: null, disabled: true }]
     });
 
