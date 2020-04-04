@@ -1,20 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {
-  MatDialog,
-  MatPaginator,
-  MatSort,
-  MatTableDataSource
-} from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { merge, of } from 'rxjs';
-import {
-  catchError,
-  debounceTime,
-  map,
-  startWith,
-  switchMap
-} from 'rxjs/operators';
+import { catchError, debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { People, Response } from 'src/app/models';
 import { PeopleService } from 'src/app/services/people.service';
 
@@ -65,7 +54,7 @@ export class PeopleComponent implements OnInit {
     this.searchForm
       .get('search')
       .valueChanges.pipe(debounceTime(300))
-      .subscribe(value => {
+      .subscribe((value) => {
         this.dataSource.filter = value.trim().toLowerCase();
       });
 
@@ -75,9 +64,7 @@ export class PeopleComponent implements OnInit {
   // tslint:disable-next-line: use-life-cycle-interface
   public ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    this.searchForm
-      .get('search')
-      .valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
+    this.searchForm.get('search').valueChanges.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(
       this.sort.sortChange,
@@ -101,17 +88,17 @@ export class PeopleComponent implements OnInit {
             this.paginator.pageSize
           );
         }),
-        map(result => {
+        map((result) => {
           this.totalCount = result.totalCount;
           this.isRateLimitReached = false;
           return result.data;
         }),
-        catchError(error => {
+        catchError((error) => {
           this.isRateLimitReached = true;
           return of([]);
         })
       )
-      .subscribe(data => {
+      .subscribe((data) => {
         this.dataSource = new MatTableDataSource<People>(data);
       });
   }
@@ -125,13 +112,11 @@ export class PeopleComponent implements OnInit {
         maxWidth: '30em'
       })
       .afterClosed()
-      .subscribe(data => {
+      .subscribe((data) => {
         if (data) {
           this.peopleService.create(data).subscribe((result: Response) => {
             this.toastrService.success('Persona agregada');
-            this.dataSource = new MatTableDataSource<any>(
-              this.peopleService.getCacheData()
-            );
+            this.dataSource = new MatTableDataSource<any>(this.peopleService.getCacheData());
           });
         }
       });
@@ -147,7 +132,7 @@ export class PeopleComponent implements OnInit {
         data: element
       })
       .afterClosed()
-      .subscribe(data => {
+      .subscribe((data) => {
         if (data) {
           this.peopleService.update(data).subscribe((result: Response) => {
             this.updateSuccess(result, 'Persona actualizada');
@@ -161,9 +146,7 @@ export class PeopleComponent implements OnInit {
   private updateSuccess(result: Response, successText: string) {
     const filter = this.dataSource.filter;
     this.toastrService.success(successText);
-    this.dataSource = new MatTableDataSource<People>(
-      this.peopleService.getCacheData()
-    );
+    this.dataSource = new MatTableDataSource<People>(this.peopleService.getCacheData());
     this.searchForm.get('search').setValue(filter);
   }
 
