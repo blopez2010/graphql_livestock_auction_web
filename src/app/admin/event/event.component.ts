@@ -3,13 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { MatSort } from '@angular/material/sort';
 import { ToastrService } from 'ngx-toastr';
-import {
-  catchError,
-  debounceTime,
-  map,
-  startWith,
-  switchMap
-} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { Event, Response } from 'src/app/models';
 import { EventsService } from 'src/app/services/events.service';
 import { ItemsService } from 'src/app/services/items.service';
@@ -23,13 +17,7 @@ import { EventFormComponent } from '../../components/event-form/event-form.compo
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-  public displayedColumns: string[] = [
-    'more',
-    'name',
-    'description',
-    'startDate',
-    'endDate'
-  ];
+  public displayedColumns: string[] = ['more', 'name', 'description', 'startDate', 'endDate'];
   public searchForm: FormGroup;
   public dataSource: any = new MatTableDataSource<any>([]);
   public totalCount = 0;
@@ -58,7 +46,7 @@ export class EventComponent implements OnInit {
     this.searchForm
       .get('search')
       .valueChanges.pipe(debounceTime(300))
-      .subscribe(value => {
+      .subscribe((value) => {
         this.dataSource.filter = value.trim().toLowerCase();
       });
   }
@@ -70,7 +58,7 @@ export class EventComponent implements OnInit {
         maxWidth: '20em'
       })
       .afterClosed()
-      .subscribe(data => {
+      .subscribe((data) => {
         if (data) {
           this.eventService.create(data).subscribe((result: Response) => {
             if (result.data.data !== null) {
@@ -92,10 +80,10 @@ export class EventComponent implements OnInit {
         data: element
       })
       .afterClosed()
-      .subscribe(data => {
+      .subscribe((data) => {
         if (data) {
           this.eventService.update(data).subscribe((result: Response) => {
-            this.updateSuccess(result, 'Evento actualizado');
+            this.updateSuccess('Evento actualizado');
           });
         }
       });
@@ -104,7 +92,7 @@ export class EventComponent implements OnInit {
   public deleteEvent(element: Event) {
     this.itemsService
       .getByEventPaginated(element.id, null, 'ordinal', 'ASC', 1, 1)
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result.data.length === 0) {
           this.openDialog(element);
         } else {
@@ -122,9 +110,9 @@ export class EventComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.eventService.delete(element).subscribe(response => {
+        this.eventService.delete(element).subscribe((response) => {
           if (!response.data.error) {
             this.toastrService.success('Evento Eliminado');
             this.getEvents();
@@ -137,7 +125,7 @@ export class EventComponent implements OnInit {
   }
 
   private getEvents() {
-    this.eventService.get().subscribe(result => {
+    this.eventService.get().subscribe((result) => {
       this.dataSource = new MatTableDataSource<any>(result.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -145,7 +133,7 @@ export class EventComponent implements OnInit {
     });
   }
 
-  private updateSuccess(result: Response, successText: string) {
+  private updateSuccess(successText: string) {
     const filter = this.dataSource.filter;
     this.toastrService.success(successText);
     this.getEvents();
