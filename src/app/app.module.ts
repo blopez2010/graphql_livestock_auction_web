@@ -15,6 +15,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { SessionGuard } from './shared/guards/session.guard';
 import { HeaderComponent } from './shared/header/header.component';
 import { SessionService } from './shared/session.service';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent],
@@ -39,7 +40,8 @@ import { SessionService } from './shared/session.service';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    {provide: MAT_DATE_LOCALE, useValue: 'es-CR'}
   ],
   bootstrap: [AppComponent]
 })
