@@ -142,8 +142,8 @@ export class BuyersComponent implements OnInit {
   /**
    * selectedEventChange
    */
-  public selectedEventChange(eventId) {
-    this.reportService.getBuyersReport(eventId).subscribe((result) => {
+  public selectedEventChange(event) {
+    this.reportService.getBuyersReport(event.id).subscribe((result) => {
       this.dataReportService.updateData({
         ...this.reportSchema,
         dataSource: this.formatReportService.formatData(result)

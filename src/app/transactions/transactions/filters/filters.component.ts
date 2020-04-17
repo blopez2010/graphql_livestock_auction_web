@@ -74,10 +74,12 @@ export class FiltersComponent implements OnInit {
     return false;
   };
 
-  public selectedEventChange(eventId: string) {
-    this.form.get('eventId').setValue(eventId);
+  public selectedEventChange(event: any) {
+    this.form.get('eventId').setValue(event.id);
   }
-  public selectedBuyerChange() {}
+  public selectedBuyerChange(buyer) {
+    this.form.get('buyerId').setValue(buyer.id);
+  }
 
   //#endregion
 
@@ -95,8 +97,8 @@ export class FiltersComponent implements OnInit {
       isLastBuyer: false,
       paymentMethod: undefined,
       paymentReference: undefined,
-      paymentDateFrom: [{ value: undefined, disabled: true }, ValidateDateRange],
-      paymentDateTo: [{ value: undefined, disabled: true }, ValidateDateRange]
+      paymentDateFrom: [{ value: undefined }, ValidateDateRange],
+      paymentDateTo: [{ value: undefined }, ValidateDateRange]
     });
   }
 

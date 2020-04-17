@@ -165,7 +165,7 @@ export class ItemComponent implements OnInit {
   }
 
   public selectedEventChange(event: any) {
-    this.searchForm.get('eventId').setValue(event);
+    this.searchForm.get('eventId').setValue(event.id);
   }
 
   public searchEventChange(text: string) {

@@ -141,8 +141,8 @@ export class DebtorsComponent implements OnInit {
   /**
    * selectedEventChange
    */
-  public selectedEventChange(eventId) {
-    this.reportService.getDebtorsReport(eventId).subscribe((result) => {
+  public selectedEventChange(event) {
+    this.reportService.getDebtorsReport(event.id).subscribe((result) => {
       this.dataReportService.updateData({
         ...this.reportSchema,
         dataSource: this.formatReportService.formatData(result)
