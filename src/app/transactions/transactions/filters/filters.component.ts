@@ -97,8 +97,8 @@ export class FiltersComponent implements OnInit {
       isLastBuyer: false,
       paymentMethod: undefined,
       paymentReference: undefined,
-      paymentDateFrom: [{ value: undefined }, ValidateDateRange],
-      paymentDateTo: [{ value: undefined }, ValidateDateRange]
+      paymentDateFrom: [undefined, ValidateDateRange],
+      paymentDateTo: [undefined, ValidateDateRange]
     });
   }
 
