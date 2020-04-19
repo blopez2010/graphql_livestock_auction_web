@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, NgForm } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher, MatAutocomplete, MatAutocompleteTrigger } from '@angular/material';
 import { guidRegex } from 'src/app/shared/constants';
 
@@ -30,11 +30,12 @@ class CustomErrorStateMatcher implements ErrorStateMatcher {
 export class AutoCompleteComponent implements OnInit {
   public filteredList: any[];
   public customErrorStateMatcher: CustomErrorStateMatcher;
-
-  @Input() public form: FormGroup;
+  public form: FormGroup;
+  
   @Input() public list: any[] = [];
-  @Input() public field = '';
+  @Input() public searchField = '';
   @Input() public lookupField = '';
+  @Input() public defaultValue: any;
   @Input() public placeholder: any;
   @Input() public showAddButton = false;
   @Input() public isRequired = false;
@@ -47,12 +48,25 @@ export class AutoCompleteComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger, { static: true })
   public matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  constructor(private helpersService: HelpersService) {}
-
+  constructor(private changeDetector : ChangeDetectorRef, private helpersService: HelpersService, private formBuilder: FormBuilder) {}
+  
+  // tslint:disable-next-line: use-life-cycle-interface
+  public ngAfterViewChecked(){
+    this.changeDetector.detectChanges();
+  }
+  
   public ngOnInit() {
     this.customErrorStateMatcher = new CustomErrorStateMatcher(this.isRequired);
 
-    this.form.get(this.field).valueChanges.subscribe((lookupObj) => {
+    if (!this.lookupField) {
+			this.lookupField = this.searchField;
+		}
+
+		this.form = this.formBuilder.group({
+			[this.searchField]: ''
+		});
+
+    this.form.get(this.searchField).valueChanges.subscribe((lookupObj) => {
       if (typeof lookupObj === 'string') {
         if (lookupObj) {
           this.filter(lookupObj);
@@ -61,10 +75,14 @@ export class AutoCompleteComponent implements OnInit {
         }
       }
 
-      if (typeof lookupObj === 'string' && guidRegex.test(lookupObj)) {
+      if (typeof lookupObj === 'object') {
         this.selectedItemChange.emit(lookupObj);
       }
     });
+
+    if (this.defaultValue) {
+			this.form.get(this.searchField).setValue(this.defaultValue);
+		}
 
     this.displayFn = this.displayFn.bind(this);
   }

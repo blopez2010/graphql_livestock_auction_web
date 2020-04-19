@@ -124,8 +124,8 @@ export class DonorsComponent implements OnInit {
   /**
    * selectedEventChange
    */
-  public selectedEventChange(eventId) {
-    this.reportService.getDonorsReport(eventId).subscribe((result) => {
+  public selectedEventChange(event) {
+    this.reportService.getDonorsReport(event.id).subscribe((result) => {
       const data = {
         ...this.reportSchema,
         dataSource: {

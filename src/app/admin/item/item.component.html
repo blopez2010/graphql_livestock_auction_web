@@ -1,10 +1,9 @@
 <div class="container">
   <div class="filter filter-items">
     <lsa-auto-complete 
-      [form]="searchForm"
       [list]="events" 
       [placeholder]="'Eventos'" 
-      [field]="'event'"
+      [searchField]="'event'"
       [lookupField]="'eventName'" 
       [isRequired]="true"
       (selectedItemChange)="selectedEventChange($event)">

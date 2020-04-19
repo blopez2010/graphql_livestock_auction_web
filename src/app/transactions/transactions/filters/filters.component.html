@@ -3,8 +3,7 @@
     <div class="filter filter-transaction">
       <lsa-auto-complete 
         [list]="events" 
-        [(form)]="form"
-        [field]="'event'"
+        [searchField]="'event'"
         [placeholder]="'Eventos'" 
         [lookupField]="'eventName'" 
         [isRequired]="true"
@@ -12,8 +11,7 @@
       </lsa-auto-complete>
       <lsa-auto-complete 
         [list]="buyers" 
-        [(form)]="form"
-        [field]="'buyerId'"
+        [searchField]="'buyerId'"
         [placeholder]="'Comprador'" 
         [lookupField]="'fullName'" 
         (selectedItemChange)="selectedBuyerChange($event)">
@@ -47,12 +45,12 @@
     </div>
     <div class="filter filter-transaction">
       <mat-form-field>
-        <input matInput [matDatepicker]="paymentDateFrom" placeholder="Fecha de pago inicial" formControlName="paymentDateFrom" autocomplete="off">
+        <input matInput [matDatepicker]="paymentDateFrom" placeholder="Fecha de pago inicial" formControlName="paymentDateFrom" autocomplete="off" readonly>
         <mat-datepicker-toggle matSuffix [for]="paymentDateFrom"></mat-datepicker-toggle>
         <mat-datepicker #paymentDateFrom disabled="false"></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepickerFilter]="toDateRangeFilter" [matDatepicker]="paymentDateTo" placeholder="Fecha de pago final" formControlName="paymentDateTo" autocomplete="off">
+        <input matInput [matDatepickerFilter]="toDateRangeFilter" [matDatepicker]="paymentDateTo" placeholder="Fecha de pago final" formControlName="paymentDateTo" autocomplete="off" readonly>
         <mat-datepicker-toggle matSuffix [for]="paymentDateTo"></mat-datepicker-toggle>
         <mat-datepicker #paymentDateTo disabled="false"></mat-datepicker>
       </mat-form-field>
