@@ -6,12 +6,14 @@
       <mat-option value="BUYERS">Compradores</mat-option>
       <mat-option value="DEBTORS">Deudores</mat-option>
       <mat-option value="DONORS">Donadores</mat-option>
+      <mat-option value="TOTALS">Totales en el tiempo</mat-option>
     </mat-select>
   </mat-form-field>
   <div [ngSwitch]="selectedReport">
     <lsa-buyers-report *ngSwitchCase="'BUYERS'"></lsa-buyers-report>
     <lsa-debtors-report *ngSwitchCase="'DEBTORS'"></lsa-debtors-report>
     <lsa-donors-report *ngSwitchCase="'DONORS'"></lsa-donors-report>
+    <lsa-totals-report *ngSwitchCase="'TOTALS'"></lsa-totals-report>
     <div *ngSwitchDefault></div>
   </div>
 </div>
