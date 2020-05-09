@@ -25,4 +25,11 @@ export class ItemFormControlsComponent implements OnInit {
   public displayFn(item) {
     return this.helpersService.displayFn(item, this.matAutocomplete);
   }
+
+  /**
+   * selectedEventChange
+   */
+  public selectedEventChange(ownerId) {
+    this.form.get("ownerId").setValue(ownerId);
+  }
 }

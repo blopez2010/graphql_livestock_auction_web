@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   api: 'http://localhost:4000/',
+  wsLink: 'ws://localhost:4000/graphql',
   publicKey: '6289bc3ad654471a82cf76d3661f7ef0'
 };
 

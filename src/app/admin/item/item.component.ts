@@ -106,17 +106,17 @@ export class ItemComponent implements OnInit {
           );
         }),
         map((result) => {
-          this.totalCount = result.totalCount;
-          this.isRateLimitReached = false;
-          return result.data;
+          return result;
         }),
         catchError(() => {
           this.isRateLimitReached = true;
           return of([]);
         })
       )
-      .subscribe((data) => {
-        this.dataSource = new MatTableDataSource<Item>(data);
+      .subscribe((result: PaginatedResponse<Item>) => {
+        this.totalCount = result.totalCount;
+        this.isRateLimitReached = false;
+        this.dataSource = new MatTableDataSource<Item>(result.data);
       });
   }
 

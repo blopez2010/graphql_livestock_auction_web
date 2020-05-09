@@ -2,7 +2,17 @@
   <mat-form-field>
     <input matInput placeholder="Ordinal" formControlName="ordinal" />
   </mat-form-field>
-  <mat-form-field>
+  <lsa-auto-complete
+    [showAddButton]="false"
+    [list]="filteredPeople" 
+    [placeholder]="'People'" 
+    [searchField]="'owner'"
+    [lookupField]="'fullName'" 
+    (selectedItemChange)="selectedEventChange($event)"
+  ></lsa-auto-complete>
+    
+  <!-- <mat-form-field>
+    
     <input type="text" cdkFocusInitial matInput placeholder="Propietario" required [matAutocomplete]="matAutocomplete"
       formControlName="ownerId">
     <mat-autocomplete [autoActiveFirstOption]="true" #matAutocomplete="matAutocomplete" [displayWith]="displayFn">
@@ -13,7 +23,7 @@
     <mat-error *ngIf="form.get('ownerId').hasError('required')">
       El propietario es requerido.
     </mat-error>
-  </mat-form-field>
+  </mat-form-field> -->
   <mat-form-field>
     <input matInput placeholder="Descripción" formControlName="description" />
   </mat-form-field>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -10,7 +10,8 @@ import {
   getItemsByEvent,
   getItemsByEventPaginated,
   getItemsCountDown,
-  getTotalItems
+  getTotalItems,
+  itemAdded
 } from '../graphql/types-definitions';
 import {
   createItem,
@@ -24,6 +25,8 @@ import { PaginatedResponse } from '../models/paginatedResponse';
   providedIn: 'root'
 })
 export class ItemsService {
+  itemsQuery: QueryRef<any>;
+
   constructor(private apollo: Apollo) {}
 
   public getItemIdFromCache(id: string): Observable<Item> {
@@ -78,29 +81,35 @@ export class ItemsService {
     offset: number,
     limit: number
   ): Observable<PaginatedResponse<Item>> {
-    return this.apollo
-      .query({
-        query: getItemsByEventPaginated,
-        variables: {
-          input: {
-            eventId,
-            filter,
-            sortColumn,
-            sortDirection,
-            offset,
-            limit
-          }
+    let todoSubscription: Observable<PaginatedResponse<Item>>;
+    let item: any[];
+    this.itemsQuery = this.apollo.watchQuery({
+      query: getItemsByEventPaginated,
+      variables: {
+        input: {
+          eventId,
+          filter,
+          sortColumn,
+          sortDirection,
+          offset,
+          limit
         }
-      })
-      .pipe(
-        map((result) => ({
-          data: result.data['allItemsPaginated'].items,
-          totalCount: result.data['allItemsPaginated'].totalCount,
-          limit: result.data['allItemsPaginated'].limit,
-          offset: result.data['allItemsPaginated'].offset,
-          isLoading: result.loading
-        }))
-      );
+      }
+    });
+
+    todoSubscription = this.itemsQuery.valueChanges.pipe(
+      map((result) => ({
+        data: result.data['allItemsPaginated'].items,
+        totalCount: result.data['allItemsPaginated'].totalCount,
+        limit: result.data['allItemsPaginated'].limit,
+        offset: result.data['allItemsPaginated'].offset,
+        isLoading: result.loading
+      }))
+    );
+
+    this.subscribeToNewItems();
+
+    return todoSubscription;
   }
 
   public getTotalCountByEvent(eventId: string): Observable<Response> {
@@ -155,7 +164,6 @@ export class ItemsService {
   }
 
   /**
-   * getItemsCountDown
    */
   public getTotalItems(eventId: string) {
     return this.apollo
@@ -236,5 +244,27 @@ export class ItemsService {
           };
         })
       );
+  }
+
+  public subscribeToNewItems() {
+    this.itemsQuery.subscribeToMore({
+      document: itemAdded,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const newFeedItem = subscriptionData.data.itemAdded;
+
+        return {
+          ...prev,
+          allItemsPaginated: {
+            ...prev.allItemsPaginated,
+            totalCount: prev.allItemsPaginated.totalCount + 1,
+            items: [...prev.allItemsPaginated.items, newFeedItem]
+          }
+        };
+      }
+    });
   }
 }
